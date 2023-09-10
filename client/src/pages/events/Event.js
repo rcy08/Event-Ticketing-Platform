@@ -49,7 +49,7 @@ const Event = () => {
 
         // console.log(userDetails._id);
         const user_id = userDetails._id;
-        const response = await fetch(`https://vast-pear-blackbuck-suit.cyclic.app/events/book-event/${id}/${user_id}`, {
+        const response = await fetch(`https://ticketvibe-server.cyclic.app/events/book-event/${id}/${user_id}`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' }
         });

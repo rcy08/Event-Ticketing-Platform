@@ -18,7 +18,7 @@ const SignIn = () => {
 
         e.preventDefault();
 
-        const response = await fetch('https://vast-pear-blackbuck-suit.cyclic.app/auth/signin', {
+        const response = await fetch('https://ticketvibe-server.cyclic.app/auth/signin', {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ usernameOrEmail: email, password })

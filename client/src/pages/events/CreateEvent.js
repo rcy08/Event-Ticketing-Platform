@@ -36,7 +36,7 @@ const CreateEvent = () => {
 
         const token = JSON.parse(localStorage.getItem('userToken')).token;
 
-        const response = await fetch('https://vast-pear-blackbuck-suit.cyclic.app/events/create', {
+        const response = await fetch('https://ticketvibe-server.cyclic.app/events/create', {
             method: 'POST',
             headers: { 
                 'Content-Type' : 'application/json',

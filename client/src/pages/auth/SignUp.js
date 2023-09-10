@@ -22,7 +22,7 @@ const SignUp = () => {
 
         if (password === confirmpassword && password.length >= 6 && username.length >= 4 && fname.length >= 4) {
 
-            const response = await fetch('https://vast-pear-blackbuck-suit.cyclic.app/auth/signup', {
+            const response = await fetch('https://ticketvibe-server.cyclic.app/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type' : 'application/json' },
                 body: JSON.stringify({ fname, lname, username, email, password, dob })
