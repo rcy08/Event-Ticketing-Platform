@@ -54,7 +54,7 @@ const SignIn = () => {
         const name = userObject.name;
         const picture = userObject.picture;
     
-        await fetch('/auth/google-user', {
+        await fetch('https://ticketvibe-server.cyclic.app/auth/google-user', {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ email, name, picture })
