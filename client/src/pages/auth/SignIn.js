@@ -18,7 +18,7 @@ const SignIn = () => {
 
         e.preventDefault();
 
-        const response = await fetch('https://ticketvibe-server.cyclic.app/auth/signin', {
+        const response = await fetch('https://ticketvibeserver.cyclic.app/auth/signin', {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ usernameOrEmail: email, password })
@@ -54,7 +54,7 @@ const SignIn = () => {
         const name = userObject.name;
         const picture = userObject.picture;
     
-        await fetch('https://ticketvibe-server.cyclic.app/auth/google-user', {
+        await fetch('https://ticketvibeserver.cyclic.app/auth/google-user', {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ email, name, picture })

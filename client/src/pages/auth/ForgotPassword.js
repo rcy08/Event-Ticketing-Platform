@@ -15,7 +15,7 @@ const ForgotPassword = () => {
         setErrors({});
         setStatus();
 
-        const response = await fetch('https://ticketvibe-server.cyclic.app/auth/forgot-password', {
+        const response = await fetch('https://ticketvibeserver.cyclic.app/auth/forgot-password', {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ email })

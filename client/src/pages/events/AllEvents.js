@@ -12,7 +12,7 @@ const AllEvents = () => {
 
         const getEvents = async () => {
 
-            const response = await fetch('https://ticketvibe-server.cyclic.app/events/', {
+            const response = await fetch('https://ticketvibeserver.cyclic.app/events/', {
                 method: 'GET',
                 headers: { 'Content-Type' : 'application/json' }
             });

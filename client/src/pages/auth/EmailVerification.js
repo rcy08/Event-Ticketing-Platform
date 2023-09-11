@@ -11,7 +11,7 @@ const EmailVerification = () => {
 
         const Verify = async () => {
 
-            const response = await fetch(`https://ticketvibe-server.cyclic.app/auth/email-verification/${verificationToken}`, {
+            const response = await fetch(`https://ticketvibeserver.cyclic.app/auth/email-verification/${verificationToken}`, {
                 method : 'POST',
                 headers: { 'Content-Type' : 'application/json' },
             });
