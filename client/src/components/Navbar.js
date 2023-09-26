@@ -34,7 +34,7 @@ export default function NavbarWithDropdown() {
         >
           <Navbar.Brand href="/">
             <img
-              alt="Flowbite"
+              alt=""
               className="mr-3 h-6 sm:h-9"
               src="/favicon.svg"
             />
