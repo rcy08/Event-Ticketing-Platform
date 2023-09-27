@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Carousel, Card } from 'flowbite-react'; 
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useEventContext } from '../../hooks/useEventContext';
@@ -68,12 +68,12 @@ const Event = () => {
 
     return (
         
-        <div className="single-event bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ..."> 
+        <div className="mb-40"> 
 
             {event && 
 
                 <div className='w-full flex flex-col items-center justify-evenly'> 
-                    <Carousel slideInterval={3000} className='w-3/4 h-96 mt-8'>
+                    <Carousel slideInterval={3000} className='w-3/4 h-96 mt-12 mb-32'>
                         <img
                             alt="..."
                             src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
@@ -96,37 +96,42 @@ const Event = () => {
                         />
                     </Carousel>   
 
-                            
-                    <Card
-                        imgAlt=""
-                        imgSrc="/images/blog/image-1.jpg"
-                        className='w-1/4 flex items-center justify-center'
-                    >
-                        <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            <p> {event.title} </p> 
-                        </h5>
-                        <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                            <p> Starts on {event.start} </p> 
-                        </h5>
-                        <h5 className="text-lg font-medium tracking-tight text-gray-900 dark:text-white">
-                            <p> Ends on {event.end} </p> 
-                        </h5>
-                        <h5 className="text-lg font-medium tracking-tight text-gray-900 dark:text-white">
-                            <p> Registration Starts on {event.reg_start} </p>
-                        </h5>
-                        <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                            <p> Registration Ends on {event.reg_end} </p> 
-                        </h5>
-                        <h5 className="text-lg font-medium tracking-tight text-gray-900 dark:text-white">
-                            <p> Venue - {event.venue} </p> 
-                        </h5>
-                        <h5 className="text-lg font-medium tracking-tight text-gray-900 dark:text-white">
-                            <p> Description - {event.description} </p> 
-                        </h5>      
+                    <div className='w-3/4 mb-12'>
 
-                        <button type="button" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800" onClick={handleBook}> <a href='/'> Book a Ticket </a> </button> 
-                            
-                    </Card>
+                        <div className='flex flex-row justify-between mb-12'>
+                            <div> <h1 className='text-4xl font-bold'> {event.title} </h1> </div>   
+                            <div> <Link> Share Event </Link> </div> 
+                        </div> 
+
+                        <div className='flex flex-row justify-between mb-8'>
+                            <div> Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente a ipsa sed ipsum at doloribus distinctio </div> 
+                        </div>
+
+                        <div className=''>
+                            <div> <h1 className='text-xl font-semibold mb-4'> Date </h1> </div> 
+                            <div> <h1 className='font-bold text-orange-500 mb-8'> {event.start} </h1> </div> 
+                        </div>
+
+                        <div className=''>
+                            <div> <h1 className='text-xl font-semibold mb-4'> Venue </h1> </div> 
+                            <div> <h1 className='font-normal text-grey-500 mb-8'> {event.venue} </h1> </div> 
+                        </div>
+
+                        <div className=''>
+                            <div> <h1 className='text-xl font-semibold mb-4'> Registration </h1> </div> 
+                            <div>  <h1 className='font-normal text-grey-500 mb-8'> Ends on {event.reg_end} </h1> </div> 
+                        </div>
+
+                        <div className='flex flex-row justify-between mb-20'>
+                            <div> <h1 className='text-xl font-semibold mb-4'> Total Registrations </h1> </div>  <div className='font-semibold text-blue-700 mr-4'> x{event.bookedBy.length} </div>   
+                            {/* <div> <h1 className='font-normal text-grey-500 mb-20'> Ends on {event.reg_end} </h1> </div>  */}
+                        </div>
+
+                        <div className='flex flex-row justify-center'>
+                            <button type="button" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800" onClick={handleBook}> <a href='/'> Book a Ticket </a> </button> 
+                        </div>
+
+                    </div>
 
                 </div>
                   

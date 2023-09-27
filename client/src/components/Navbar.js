@@ -38,7 +38,7 @@ export default function NavbarWithDropdown() {
               className="mr-3 h-6 sm:h-9"
               src="/favicon.svg"
             />
-            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white"> Event Ticketing </span>
+            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white"> Ticketvibe </span>
           </Navbar.Brand>
 
           { signedin ? 
