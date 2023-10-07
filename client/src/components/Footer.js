@@ -45,8 +45,8 @@ export default function FooterSitemapLinks() {
         <div className="w-full bg-gray-700 px-4 py-6 sm:flex sm:items-center sm:justify-center">
           <Footer.Copyright
             className='mx-16 text-green-400 font-bold'
-            by="Event Ticketing™"
-            href="#"
+            by="Ticketvibe™"
+            href="/"
             year={2023}
           />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">

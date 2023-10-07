@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Dropdown, Navbar, Button } from 'flowbite-react';
+import { Dropdown, Navbar, Button } from 'flowbite-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { MdLogout } from 'react-icons/md';
 
 export default function NavbarWithDropdown() {
 
@@ -43,24 +44,40 @@ export default function NavbarWithDropdown() {
 
           { signedin ? 
 
-              <div className="flex md:order-2 w-0">
-                <Dropdown
-                  inline
-                  label={<Avatar alt="User settings" img="" rounded/>}
-                >
-                  <Dropdown.Header>
-                    <span className="font-bold block text-sm w-40 my-2"> {userDetails.username} </span>
-                    <span className="font-bold block truncate text-sm w-52 my-1"> {userDetails.email} </span>
-                  </Dropdown.Header>
+              <div className="flex md:order-2 w-0 mr-16">
+                <Dropdown label="rc08">
 
-                  <a href={'/profile/' + userDetails.username} className='font-medium text-black-600 dark:text-blue-500 px-4 py-2 w-40'> Profile </a>
-                  <Dropdown.Divider />
-                  <a href='/' className='font-medium text-black-600 dark:text-blue-500 px-4 py-2 w-40'> My Events </a>
-                  <Dropdown.Divider />
-                  {/* <a href='/' className='font-medium text-black-600 dark:text-blue-500 px-4 py-2 w-40'> Earnings </a> */}
-                  <Dropdown.Divider />
-                  <Button gradientMonochrome="failure" className='font-medium text-white-600 dark:text-blue-500 px-0 py-0 mx-4 h-8 w-22' onClick={handleSignout}> Sign Out </Button>
-                </Dropdown>
+                  <Dropdown.Header>
+                    <span className="block text-lg font-bold mb-2">
+                      {userDetails.username}
+                    </span>
+                    <span className="block truncate text-sm font-medium">
+                      {userDetails.email}
+                    </span>
+                  </Dropdown.Header>
+                  
+                    <Link to={'/profile/'+userDetails.username}> 
+                      <div className='hover:bg-gray-100'>
+                        <div className='ml-4 h-10 flex flex-row items-center'> Profile </div>
+                      </div>
+                    </Link>
+
+                    <Link to='/'> 
+                      <div className='hover:bg-gray-100'>
+                        <div className='ml-4 h-10 flex flex-row items-center'> My Events </div> 
+                      </div> 
+                    </Link> 
+                    
+                    <Dropdown.Divider />
+
+                    <div className='hover:bg-gray-100'>
+                      <button className='flex flex-row items-center ml-4 h-10 w-full font-semibold' onClick={handleSignout}>
+                        <MdLogout className='my-auto mr-2' />
+                        <p className='text-red-500'> Sign Out </p> 
+                      </button>
+                    </div>
+                    
+              </Dropdown>
 
                 <Navbar.Toggle />
               </div>    
