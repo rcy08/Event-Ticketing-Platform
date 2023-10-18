@@ -13,7 +13,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 1600px;
 }
 
 .home{
@@ -21,7 +20,6 @@
     width: 100vw;
     display: flex;
     justify-content: center;
-    max-width: 1600px;
 }
 
 .single-event{
@@ -29,7 +27,6 @@
     width: 100vw;
     display: flex;
     justify-content: center;
-    max-width: 1600px;
 }
 
 .navbar{

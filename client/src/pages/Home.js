@@ -4,9 +4,9 @@ const Home = () => {
 
     return (
         
-        <div className='home bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ...'>
+        <div className='home'>
 
-            <Carousel slideInterval={3000} className='w-full h-2/3'>
+            <Carousel slideInterval={3000} className='w-9/12 mx-auto h-5/6'>
                 <img
                     alt="..."
                     src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
