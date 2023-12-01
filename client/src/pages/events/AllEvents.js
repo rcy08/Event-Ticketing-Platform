@@ -48,11 +48,11 @@ const AllEvents = () => {
 
     return (
 
-        <div className="mt-24 mb-40 ml-4 mr-4">
+        <div className="mt-12 sm:mt-24 mb-24 sm:mb-40 mx-[40px] md:mx-[50px] lg:mx-[60px] ">
 
-            <div className='flex flex-row justify-center items-center mb-20'>   
+            <div className='flex flex-row justify-center items-center mb-12 sm:mb-20'>   
                 <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                <div class="relative w-1/3">
+                <div class="relative w-full sm:w-2/3 xl:w-1/3">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -72,10 +72,10 @@ const AllEvents = () => {
                 </div>
             }
 
-            <div className='grid grid-cols-4 gap-4 ml-4 mr-6' >
+            <div className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-[27px] lg:gap-[32px] ' >
 
             {searchInput && filterEvents.map(event => (
-                    <div className='hover:shadow-xl hover:shadow-gray-300 m-4' >
+                    <div className='hover:shadow-xl hover:shadow-gray-300' >
 
                         <Link to={'/event/' + event._id} target='_blank'> 
                             <Card
@@ -118,7 +118,7 @@ const AllEvents = () => {
                 ))}
 
                 {!searchInput && events && events.map(event => (
-                    <div className='hover:shadow-xl hover:shadow-gray-300 m-4' >
+                    <div className='hover:shadow-xl hover:shadow-gray-300' >
 
                         <Link to={'/event/' + event._id} target='_blank'> 
                             <Card

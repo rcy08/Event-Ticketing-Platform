@@ -23,6 +23,8 @@ function App() {
   return (
 
     <BrowserRouter>
+      <div className='absolute left-0 right-0 top-0 min-h-[100vh] flex flex-col'>
+
         <Navbar />
         <Routes>
 
@@ -72,6 +74,10 @@ function App() {
             />
         </Routes>
         <Footer />
+
+      </div>
+
+        
     </BrowserRouter>
     
   );

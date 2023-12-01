@@ -12,6 +12,10 @@ const googleUserSchema = new Schema({
         type: String,
         required: true
     },
+    username: {
+        type: String,
+        required: true
+    },
     picture: {
         type: String,
         required: true

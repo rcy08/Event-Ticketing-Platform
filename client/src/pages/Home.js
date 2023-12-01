@@ -4,30 +4,9 @@ const Home = () => {
 
     return (
         
-        <div className='home'>
+        <div className='mt-40 mx-40 min-h-[100vh] text-center'>
 
-            <Carousel slideInterval={3000} className='w-9/12 mx-auto h-5/6'>
-                <img
-                    alt="..."
-                    src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
-                />
-                <img
-                    alt="..."
-                    src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
-                />
-                <img
-                    alt="..."
-                    src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
-                />
-                <img
-                    alt="..."
-                    src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
-                />
-                <img
-                    alt="..."
-                    src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
-                />
-            </Carousel>
+            This is Home
 
         </div>
 

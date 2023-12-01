@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/sendEmail');
+const googleUser = require('../models/googleuser');
 
 let errors = {
     username : "",
@@ -71,9 +72,17 @@ const signup = async (req,res) => {
 
     console.log('Email Sent');
 
+    const googleuser = await googleUser.findOne({ email });
+
+    if(googleuser){
+        googleuser.username = username;
+        await googleuser.save();
+    }
+
     res.status(200).json({ 
         "message" : "Successfully Registered"
     });    
+
 }
 
 const emailVerification = async (req, res) => {

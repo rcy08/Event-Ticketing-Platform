@@ -5,7 +5,7 @@ const { signup, signin, forgotPassword, resetPassword, emailVerification, userDe
 
 const { auth } = require('../middlewares/auth');
 
-const { googleUsers } = require('../controllers/googleauthController');
+const { googleUserSignin, googleUserSignup } = require('../controllers/googleauthController');
 
 router.post('/signup', signup);
 
@@ -19,7 +19,9 @@ router.post('/reset-password/:resetToken', resetPassword);
 
 router.get('/user-details', auth, userDetails);
 
-router.post('/google-user', googleUsers);
+router.post('/google-user/signin', googleUserSignin);
+
+router.post('/google-user/signup', googleUserSignup);
 
 router.delete('/delete-account/:id', deleteAccount);
 

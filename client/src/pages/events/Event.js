@@ -68,12 +68,12 @@ const Event = () => {
 
     return (
         
-        <div className="mb-40"> 
+        <div className="mb-40 mx-[40px] md:mx-0"> 
 
             {event && 
 
                 <div className='w-full flex flex-col items-center justify-evenly'> 
-                    <Carousel slideInterval={3000} className='w-3/4 h-96 mt-12 mb-32'>
+                    <Carousel slideInterval={3000} className='w-full md:mx-0 sm:w-5/6 md:w-3/4 h-96 mt-12 mb-32'>
                         <img
                             alt="..."
                             src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
@@ -96,7 +96,7 @@ const Event = () => {
                         />
                     </Carousel>   
 
-                    <div className='w-3/4 mb-12'>
+                    <div className='w-full sm:w-5/6 md:w-3/4 mb-12'>
 
                         <div className='flex flex-row justify-between mb-12'>
                             <div> <h1 className='text-4xl font-bold'> {event.title} </h1> </div>   
