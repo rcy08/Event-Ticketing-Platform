@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AllEvents from './pages/events/AllEvents';
@@ -20,9 +20,14 @@ function App() {
 
   const { signedin } = useAuthContext();
 
+  const { path } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [path]);
+
   return (
 
-    <BrowserRouter>
       <div className='absolute left-0 right-0 top-0 min-h-[100vh] flex flex-col'>
 
         <Navbar />
@@ -54,7 +59,7 @@ function App() {
             />
             <Route 
               path='/auth/signin'
-              element={ !signedin ? <SignIn /> : <Navigate to='/' />}
+              element={ !signedin ? <SignIn /> : <Navigate to='/' /> }
             />
             <Route 
               path='/auth/email-verification/:verificationToken'
@@ -66,19 +71,17 @@ function App() {
             />
             <Route 
               path='/auth/reset-password/:resetToken'
-              element={ !signedin ? <ResetPassword /> : <Navigate to='/' />}
+              element={ !signedin ? <ResetPassword /> : <Navigate to='/' /> }
             />
             <Route 
               path='*'
               element={ <NotFound /> }
             />
+
         </Routes>
         <Footer />
 
       </div>
-
-        
-    </BrowserRouter>
     
   );
 }

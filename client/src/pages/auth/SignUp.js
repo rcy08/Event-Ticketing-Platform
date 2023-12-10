@@ -185,7 +185,7 @@ const SignUp = () => {
 
     return (
         
-        <div className="h-[100vh] flex items-center justify-center"> 
+        <div className="h-[100vh] mt-12 flex items-center justify-center"> 
             
             <form className="rounded relative w-[75%] min-[550px]:w-[60%] sm:w-[50%] md:w-[40%] min-[1075px]:w-[30%] xl:w-[25%] 2xl:w-[20%]" onSubmit={handleSubmit}>
 
@@ -265,10 +265,12 @@ const SignUp = () => {
                 </div>
 
                 <div className='flex justify-center'>
-                    <button className="w-[200px] text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2">Submit</button>    
-                </div>
+                    <button className="w-[110px] text-white bg-orange-500 hover:bg-orange-600 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
+                </div>   
 
-                <div className='flex justify-center'> <div id='signUpDiv' className='mt-3 mb-5 flex justify-center'>  </div> </div>
+                <div className='w-full flex items-center'> <hr className='h-[2px] w-1/2 bg-[#bebebe]'/> <p className='mx-[5px] text-[12px] text-black'> OR </p>  <hr className='h-[2px] w-1/2 bg-[#bebebe]'/></div> 
+
+                <div className='flex justify-center'> <div id='signUpDiv' className='mt-4 mb-5 flex justify-center'>  </div> </div>
                 
                 <h3 className="text-sm font-medium text-gray-900 dark:text-gray-300"> Already have an account? <a href="/auth/signin" className="text-blue-600 dark:text-blue-500"> Signin </a> </h3>
 

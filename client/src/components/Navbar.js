@@ -105,7 +105,7 @@ export default function NavbarWithDropdown() {
 
   return (
 
-    <nav className='flex-start z-10 w-full bg-[#1f2937] text-white h-[60px]'>
+    <nav className='fixed top-0 left-0 right-0 z-10 w-full bg-[#1f2937] text-white h-[60px]' id='navbar' >
       <div className='w-[100%] h-[100%] flex items-center relative'>
         <h2 className='absolute left-8 md:left-12 lg:left-16'>
           <Link
@@ -157,23 +157,24 @@ export default function NavbarWithDropdown() {
                     initial='hidden'
                     animate='show' 
                     ref={profileRef}
-                    className='flex flex-col border-2 absolute right-0 w-[200px] bg-white rounded-lg transition ease-in-out'
+                    className='flex flex-col border-[1px] border-t-0 border-gray-300 absolute right-0 top-10 w-[200px] bg-white transition ease-in-out'
                   >
-                    <div className='text-black font-medium h-[50px] flex px-4 items-center text-left'> 
+                    <div className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-[5px]'>  </div>
+                    <div className='text-black font-semibold text-[16px] h-[50px] flex px-4 items-center text-left'> 
                       {userDetails.username}
                     </div>
-                    <div className='text-slate-600 h-[40px] flex px-4 items-center hover:bg-[#eeeeee] hover:cursor-pointer text-left'
+                    <div className='text-black h-[40px] flex px-4 items-center hover:bg-[#eeeeee] hover:cursor-pointer text-left'
                       onClick={() => navigate(`/profile/${userDetails.username}`)}
                     > 
                     <LuUserCircle2 className='mr-2 scale-125' /> Profile 
                     </div>
-                    <div className='text-slate-600 h-[40px] flex px-4 items-center hover:bg-[#eeeeee] hover:cursor-pointer text-left'> My Events </div>
+                    <div className='text-black h-[40px] flex px-4 items-center hover:bg-[#eeeeee] hover:cursor-pointer text-left'> My Events </div>
                     <hr className='mt-2' />
-                    <button className='text-slate-600 h-[40px] flex flex-row items-center px-4 hover:bg-[#eeeeee] hover:cursor-pointer text-left'
+                    <button className='text-black h-[40px] flex flex-row items-center px-4 hover:bg-[#eeeeee] hover:cursor-pointer text-left'
                       onClick={handleSignout}
                     >
                       <MdLogout className='scale-110 my-auto' /> 
-                      <p className='text-red-600 font-medium ml-2'> Sign Out </p>
+                      <p className='text-red-500 font-semibold ml-2'> Sign Out </p>
                     </button>
                   </motion.div>
                 }  
@@ -188,13 +189,13 @@ export default function NavbarWithDropdown() {
                 onClick={() => navigate('/auth/signin')}
                 className='mr-2 hover:bg-slate-600 hover:rounded-lg font-medium '
               >
-                <p className='p-[6px] '> SignIn </p> 
+                <p className='py-[6px] px-[8px]'> SignIn </p> 
               </button>
               <button
                 onClick={() => navigate('/auth/signup')}
                 className='mr-4 hover:bg-slate-600 hover:rounded-lg font-medium '
               >
-                <p className='p-[6px] '> SignUp </p> 
+                <p className='py-[6px] px-[8px]'> SignUp </p> 
               </button>
             </div>
 
@@ -225,7 +226,7 @@ export default function NavbarWithDropdown() {
                 opacity: 1,
                 x: 0,
                 transition: {
-                  duration: 0.15,
+                  duration: 0.25,
                   type: spring,
                   ease: easeOut
                 }
@@ -247,14 +248,32 @@ export default function NavbarWithDropdown() {
               {
                 
                 SidebarLinks.map((link, index) => (
-                  <Link 
+                  <motion.a 
                     key={index} 
+                    variants={{
+                      hidden: {
+                        opacity: 0,
+                        x: 20
+                      },
+                      show: {
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                          type: spring,
+                          duration: 0.5,
+                          delay: 0.1 * index,
+                          ease: easeOut 
+                        }
+                      }
+                    }}
+                    initial='hidden'
+                    animate='show'
                     to={link.path} 
                     className='hover:bg-slate-600 w-full my-2 p-[10px] rounded-md'
                     onClick={() => setIsOpen(false)}
                   >
                     <div className='flex items-center gap-3'> <div className='scale-[130%]'> {link.icon} </div> <p className='text-xl'> {link.title} </p> </div>
-                  </Link>
+                  </motion.a>
                 ))  
                 
               }  
@@ -272,6 +291,7 @@ export default function NavbarWithDropdown() {
 
       </div>
     </nav>
+    
   )
 }
 

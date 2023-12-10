@@ -123,18 +123,20 @@ const SignIn = () => {
                     
                     <a href="/auth/forgot-password" className="mt-1 text-sm font-medium text-blue-600 dark:text-blue-500">Forgot Password?</a>
 
-                    <div className="flex items-start mb-6 mt-8">
-                    <div className="flex items-center h-5">
-                        <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
-                    </div>
-                    <label for="remember" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+                    <div className="flex items-start mb-6 mt-5">
+                        <div className="flex items-center h-5">
+                            <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
+                        </div>
+                        <label for="remember" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
                     </div>
 
                     <div className='flex justify-center'>
-                        <button className="w-[200px] text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-[14px] px-5 py-2.5 text-center mb-2">Submit</button>    
+                        <button className="w-[110px] text-white bg-orange-500 hover:bg-orange-600 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
                     </div>    
 
-                    <div className='flex justify-center'> <div id='signInDiv' data-auto_select="true" className='mt-3 mb-5 flex justify-center'>  </div> </div> 
+                    <div className='w-full flex items-center'> <hr className='h-[2px] w-1/2 bg-[#bebebe]'/> <p className='mx-[5px] text-[12px] text-black'> OR </p>  <hr className='h-[2px] w-1/2 bg-[#bebebe]'/></div>
+
+                    <div className='flex justify-center'> <div id='signInDiv' data-auto_select="true" className='mt-4 mb-5 flex justify-center'>  </div> </div> 
 
                     <h3 className="text-sm font-medium text-gray-900 dark:text-gray-300"> Don't have an account? <a href="/auth/signup" className="text-blue-600 dark:text-blue-500"> Signup </a> </h3>
 
