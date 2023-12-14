@@ -67,9 +67,9 @@ const CreateEvent = () => {
     }
 
     return (
-        <div className="h-[100vh] flex items-center justify-center"> 
+        <div className="h-[100vh] flex items-center justify-center mt-12"> 
 
-            <form className="rounded relative w-[75%] min-[550px]:w-[60%] sm:w-[50%] md:w-[40%] min-[1075px]:w-[30%] xl:w-[25%] 2xl:w-[20%]" onSubmit={handleSubmit}>
+            <form className="rounded relative bg-white p-4 md:p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[50%] min-[1075px]:w-[35%] xl:w-[30%] 2xl:w-[25%] shadow-2xl shadow-gray-400" onSubmit={handleSubmit}>
 
                 <h1 className='text-center text-2xl font-semibold mb-6'> Create Event </h1>
 
@@ -83,7 +83,7 @@ const CreateEvent = () => {
 
                 <div className="grid md:grid-cols-2 md:gap-6 mb-5"> 
 
-                    <div>
+                    <div className='flex items-center justify-between md:block' >
                         <label className="peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400"> Event Start </label>
                         <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 pl-5 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-9 mt-2" placeholder="Date of Birth" 
                             value={eventstart}
@@ -91,7 +91,7 @@ const CreateEvent = () => {
                         />
                     </div>
 
-                    <div>
+                    <div className='flex items-center justify-between md:block' >
                         <label className="peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400"> Event End </label>
                         <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 pl-5 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-9 mt-2" placeholder="Event End" 
                             value={eventend}
@@ -103,7 +103,7 @@ const CreateEvent = () => {
 
                 <div className="grid md:grid-cols-2 md:gap-6 mb-5"> 
 
-                    <div>
+                    <div className='flex items-center justify-between md:block' >
                         <label className="peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400"> Registration Start </label>
                         <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 pl-5 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-9 mt-2" placeholder="Date of Birth" 
                             value={regstart}
@@ -111,7 +111,7 @@ const CreateEvent = () => {
                         />
                     </div>
 
-                    <div>
+                    <div className='flex items-center justify-between md:block' >
                         <label className="peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400"> Registration End </label>
                         <input type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 pl-5 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-9 mt-2" placeholder="Date of Birth" 
                             value={regend}
@@ -138,7 +138,7 @@ const CreateEvent = () => {
                 </div>
 
                 <div className='flex justify-center'>
-                    <button className="w-[110px] text-white bg-orange-500 hover:bg-orange-600 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
+                    <button className="w-[110px] text-white border-2 border-[#eeeeee] bg-orange-500 hover:bg-white hover:text-orange-500 hover:border-orange-500 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
                 </div>
 
                 {status}

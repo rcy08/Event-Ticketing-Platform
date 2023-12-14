@@ -56,7 +56,7 @@ const SignUp = () => {
 
         const handleCheck = () => {
             if(username.length > 0 && username.length < 4){
-                setErrors({ ...errors, username: 'Minimum length of username is 6 characters' });
+                setErrors({ ...errors, username: 'Minimum length of username is 4 characters' });
             }
             else{
                 setErrors({ ...errors, username: '' });
@@ -70,8 +70,8 @@ const SignUp = () => {
     useEffect(() => {
 
         const handleCheck = () => {
-            if(fname.length > 0 && fname.length < 6){
-                setErrors({ ...errors, fname: 'Minimum length of first name is 6 characters' });
+            if(fname.length > 0 && fname.length < 4){
+                setErrors({ ...errors, fname: 'Minimum length of first name is 4 characters' });
             }
             else{
                 setErrors({ ...errors, fname: '' });
@@ -165,29 +165,32 @@ const SignUp = () => {
     }
 
     useEffect(() => {
-        google.accounts.id.initialize({
-            client_id: '707253678289-0bbj3lbd22h8r8q5bs6d5b2mj7vc2cec.apps.googleusercontent.com',
-            callback: handleCredentialResponse,
-        });
-    
-        google.accounts.id.renderButton(
-            document.getElementById('signUpDiv'),
-            { type: 'standard', 
-              theme: 'filled_blue', 
-              text: 'signup_with',
-              ux_mode: 'popup', 
-              size: 'large',
-              width: '200'
-            }
-        );
+
+        if(google.accounts){
+            google.accounts.id.initialize({
+                client_id: '707253678289-0bbj3lbd22h8r8q5bs6d5b2mj7vc2cec.apps.googleusercontent.com',
+                callback: handleCredentialResponse,
+            });
+        
+            google.accounts.id.renderButton(
+                document.getElementById('signUpDiv'),
+                { type: 'standard', 
+                theme: 'filled_blue', 
+                text: 'signup_with',
+                ux_mode: 'popup', 
+                size: 'large',
+                width: '200'
+                }
+            );    
+        }
         
     }, []);
 
     return (
         
-        <div className="h-[100vh] mt-12 flex items-center justify-center"> 
+        <div className="h-[100vh] flex items-center justify-center mt-36 min-[400px]:mt-32 md:mt-8 "> 
             
-            <form className="rounded relative w-[75%] min-[550px]:w-[60%] sm:w-[50%] md:w-[40%] min-[1075px]:w-[30%] xl:w-[25%] 2xl:w-[20%]" onSubmit={handleSubmit}>
+            <form className="rounded relative bg-white p-4 md:p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[45%] min-[1075px]:w-[32%] xl:w-[27%] 2xl:w-[22%] shadow-2xl shadow-gray-400" onSubmit={handleSubmit}>
 
                 <h1 className='text-center text-2xl font-semibold mb-6'> SignUp </h1>
 
@@ -265,14 +268,14 @@ const SignUp = () => {
                 </div>
 
                 <div className='flex justify-center'>
-                    <button className="w-[110px] text-white bg-orange-500 hover:bg-orange-600 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
+                    <button className="w-[110px] text-white border-2 border-[#eeeeee] bg-orange-500 hover:bg-white hover:text-orange-500 hover:border-orange-500 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
                 </div>   
 
                 <div className='w-full flex items-center'> <hr className='h-[2px] w-1/2 bg-[#bebebe]'/> <p className='mx-[5px] text-[12px] text-black'> OR </p>  <hr className='h-[2px] w-1/2 bg-[#bebebe]'/></div> 
 
                 <div className='flex justify-center'> <div id='signUpDiv' className='mt-4 mb-5 flex justify-center'>  </div> </div>
                 
-                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-300"> Already have an account? <a href="/auth/signin" className="text-blue-600 dark:text-blue-500"> Signin </a> </h3>
+                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-300"> Already have an account? <a href="/auth/signin" className="text-blue-600 dark:text-blue-500 ml-1"> Signin </a> </h3>
 
             </form>
         

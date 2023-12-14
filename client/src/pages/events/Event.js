@@ -4,6 +4,11 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Carousel, Card } from 'flowbite-react'; 
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useEventContext } from '../../hooks/useEventContext';
+import { IoArrowRedoSharp } from "react-icons/io5";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Event = () => {
 
@@ -65,15 +70,28 @@ const Event = () => {
 
     }
 
+    const notify = () => {
+        toast.success('Copied to Clipboard', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }; 
+
 
     return (
         
-        <div className="mb-40 mx-[40px] md:mx-0"> 
+        <div className="mt-20 mb-20 mx-[30px] md:mx-0 min-h-[100vh] "> 
 
             {event && 
 
                 <div className='w-full flex flex-col items-center justify-evenly'> 
-                    <Carousel slideInterval={3000} className='w-full md:mx-0 sm:w-5/6 md:w-3/4 h-96 mt-12 mb-32'>
+                    <Carousel slideInterval={3000} className='w-full md:mx-0 sm:w-5/6 md:w-3/4 min-[350px]:h-[325px] min-[400px]:h-[350px] min-[450px]:h-[400px] mt-12 mb-28'>
                         <img
                             alt="..."
                             src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
@@ -100,11 +118,33 @@ const Event = () => {
 
                         <div className='flex flex-row justify-between mb-12'>
                             <div> <h1 className='text-4xl font-bold'> {event.title} </h1> </div>   
-                            <div> <Link> Share Event </Link> </div> 
+                            <div> 
+                                <button
+                                    className=''
+                                    onClick={() => {
+                                        notify();
+                                        navigator.clipboard.writeText(window.location.href);
+                                    }}
+                                > 
+                                    <ToastContainer
+                                        position="top-right"
+                                        autoClose={5000}
+                                        hideProgressBar={false}
+                                        newestOnTop={false}
+                                        closeOnClick
+                                        rtl={false}
+                                        pauseOnFocusLoss
+                                        draggable
+                                        pauseOnHover
+                                        theme="light"
+                                    />
+                                    <div className='scale-[1.75] ' > <IoArrowRedoSharp /> </div>  
+                                </button> 
+                            </div> 
                         </div> 
 
-                        <div className='flex flex-row justify-between mb-8'>
-                            <div> Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente a ipsa sed ipsum at doloribus distinctio </div> 
+                        <div className='flex flex-row justify-between mb-8 w-full sm:w-5/6 lg:w-4/5 '>
+                            <div> Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, iste magnam adipisci hic tenetur ipsum, nostrum modi doloremque consequuntur quibusdam dignissimos! Sed accusantium illo ullam placeat dolore repudiandae assumenda amet nihil dicta dignissimos inventore quis beatae voluptatibus corrupti soluta quidem et, nulla velit architecto consequuntur labore unde. Laudantium, expedita. Nisi, exercitationem? Reprehenderit enim ipsum, consequuntur exercitationem delectus reiciendis architecto voluptates itaque nemo sunt esse aliquam, sed sapiente magnam. Dignissimos? </div> 
                         </div>
 
                         <div className=''>
@@ -128,7 +168,7 @@ const Event = () => {
                         </div>
 
                         <div className='flex flex-row justify-center'>
-                            <button type="button" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800" onClick={handleBook}> <a href='/'> Book a Ticket </a> </button> 
+                            <button type="button" class="text-white hover:text-gray-900 border bg-gray-800 border-gray-800 hover:bg-transparent focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded text-md px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800" onClick={handleBook}> <a href='/'> Book a Ticket </a> </button> 
                         </div>
 
                     </div>
@@ -142,7 +182,6 @@ const Event = () => {
                     <div className='font-bold text-3xl'> { errors } </div>
                 </div> 
             }
-            
 
         </div>
     );

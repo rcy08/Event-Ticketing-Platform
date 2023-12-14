@@ -58,16 +58,14 @@ const ResetPassword = () => {
 
     return (
 
-        <div className="container bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ...">
+        <div className="h-[100vh] flex items-center justify-center mt-12">
 
-            <div className="resetpassword">
+            <form className='rounded relative bg-white p-4 sm:p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[45%] min-[1075px]:w-[32%] xl:w-[27%] 2xl:w-[22%] shadow-2xl shadow-gray-400' onSubmit={handleSubmit}>
 
-            <form className='rounded' onSubmit={handleSubmit}>
-
-                <h1> Reset Password </h1>
+                <h1 className='text-center text-2xl font-semibold mb-6'> Reset Password </h1>
 
                     <div className="relative z-0 w-full mb-6 group">
-                        <input type="password" name="floating_password" id="floating_password" className="block py-2.5 px-0 w-80 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
+                        <input type="password" name="floating_password" id="floating_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -84,15 +82,19 @@ const ResetPassword = () => {
                         <div className='peer-focus:font-medium text-xs text-red-500'> {errors.confirmpassword} </div>
                     </div>
 
-                    {!status && <button className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-28">Submit</button> }
-                    
-                    {status && <div className='font-bold text-base text-green-500 mt-4'> {status} </div> }
+                    {!status && 
+                        <div className='flex justify-center'>
+                            <button className="w-[110px] text-white border-2 border-[#eeeeee] bg-orange-500 hover:bg-white hover:text-orange-500 hover:border-orange-500 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mt-4">
+                                Submit
+                            </button> 
+                        </div>
+                    }
 
-                    {errors.token && <div className='font-bold text-base text-red-500 mt-4'> {errors.token} </div>}
+                    {status && <div className='flex justify-center'> <div className='font-bold text-base text-green-500 mt-8'> {status} </div> </div> }
+
+                    {errors.token && <div className='flex justify-center'> <div className='font-bold text-base text-red-500 mt-8'> {errors.token} </div> </div> }
 
             </form>
-
-            </div>
 
         </div>
     );

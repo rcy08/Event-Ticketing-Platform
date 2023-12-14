@@ -35,14 +35,14 @@ const ForgotPassword = () => {
 
     return (
 
-        <div className="h-[100vh] flex items-center justify-center">
+        <div className="h-[100vh] flex items-center justify-center mt-12">
 
-            <form className='rounded relative w-[75%] min-[550px]:w-[60%] sm:w-[50%] md:w-[40%] min-[1075px]:w-[30%] xl:w-[25%] 2xl:w-[20%]' onSubmit={handleSubmit}>
+            <form className='rounded relative bg-white p-4 sm:p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[45%] min-[1075px]:w-[32%] xl:w-[27%] 2xl:w-[22%] shadow-2xl shadow-gray-400' onSubmit={handleSubmit}>
 
                 <h1 className='text-center text-2xl font-semibold mb-6'> Forgot Password </h1>
 
                     <div className="relative z-0 w-full mb-6 group">
-                        <input type="email" name="floating_email" id="floating_email" className="block py-2.5 px-0 w-80 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
+                        <input type="email" name="floating_email" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -51,11 +51,10 @@ const ForgotPassword = () => {
                     </div>
 
                     <div className='flex justify-center'>
-                        <button className="w-[110px] text-white bg-orange-500 hover:bg-orange-600 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
+                        <button className="w-[110px] text-white border-2 border-[#eeeeee] bg-orange-500 hover:bg-white hover:text-orange-500 hover:border-orange-500 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
                     </div>
                     
-
-                    {!status && <h3 className="text-sm font-medium text-gray-900 dark:text-gray-300"> Back to <a href="/auth/signin" className="text-blue-600 dark:text-blue-500"> Signin </a> </h3>}
+                    {!status && <h3 className="text-sm font-medium text-gray-900 dark:text-gray-300"> Back to <a href="/auth/signin" className="text-blue-600 dark:text-blue-500 ml-1"> Signin </a> </h3>}
 
                     {status && <div className='font-bold text-base text-green-500 mt-4'> {status} </div>}
                     

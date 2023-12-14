@@ -1,74 +1,155 @@
-import { Footer } from 'flowbite-react';
-import { BsFacebook, BsGithub, BsInstagram, BsTwitter } from 'react-icons/bs';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function FooterSitemapLinks() {
+import { IoLocation } from "react-icons/io5";
+import { IoMdCall } from "react-icons/io";
+import { MdMail } from "react-icons/md";
+import { FaArrowRight } from "react-icons/fa";
+import { FaRegCopyright } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { FaInstagramSquare } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa6";
+import { IoIosHome } from "react-icons/io";
+import { BiSolidInfoSquare } from "react-icons/bi";
+import { MdEvent } from "react-icons/md";
+import { IoCreateOutline } from "react-icons/io5";
+
+const QuickLinks = [
+  {
+    id: 1,
+    path: '/',
+    icon: <IoIosHome />,
+    title: 'Home'
+  },
+  {
+    id: 2,
+    path: '/about',
+    icon: <BiSolidInfoSquare />,
+    title: 'About'
+  },
+  {
+    id: 3,
+    path: '/events',
+    icon: <MdEvent />,
+    title: 'Events'
+  },
+  {
+    id: 4,
+    path: '/events/create',
+    icon: <IoCreateOutline />,
+    title: 'Create Event'
+  },
+];
+
+const SocialLinks = [
+  {
+    id: 1,
+    icon: <FaFacebook />,
+    path: 'https://facebook.com',
+    title: 'Facebook'
+  },
+  {
+    id: 2,
+    icon: <FaInstagramSquare />,
+    path: 'https://instagram.com',
+    title: 'Instagram'
+  },
+  {
+    id: 3,
+    icon: <FaTwitter />,
+    path: 'https://twitter.com',
+    title: 'Twitter'
+  },
+  {
+    id: 4,
+    icon: <FaLinkedin />,
+    path: 'https://linkedin.com',
+    title: 'LinkedIn'
+  },
+];
+
+const Contacts = [
+  {
+    id: 1,
+    icon: <IoLocation />,
+    value: 'India'
+  },
+  {
+    id: 2,
+    icon: <IoMdCall />,
+    value: '+91 123456789'
+  },
+  {
+    id: 3,
+    icon: <MdMail />,
+    value: 'abc@example.com'
+  },
+];
+
+const Footer = () => {
+
   return (
-    <Footer bgDark>
-      <div className="w-full">
-        <div className="grid w-full grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4">
-          <div>
-            <Footer.Title title="Company" className='text-bold text-blue-600' />
-            <Footer.LinkGroup col>
-              <Footer.Link href="#" className='text-blue-600'> About  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Careers  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Brand Center  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Blog  </Footer.Link>
-            </Footer.LinkGroup>
+
+    <div className='flex-end w-full bg-[#1f2937] mt-8 p-5 pb-8 min-[500px]:p-10 sm:p-16 sm:pt-12 sm:pb-8'>
+      <h2 className='text-xl text-orange-500 font-bold py-1'> Ticketvibe </h2>
+      <h2 className='text-xl mb-8 h-[2px] bg-gray-500 w-12'>  </h2>
+        <div className='w-full grid grid-cols-2 md:grid-cols-4 text-white'>
+
+          <div className='text-white flex flex-col items-start mb-8' >
+            <div className='flex flex-col justify-start'>
+              <h2 className='text-xl p-1 pl-0'> About </h2>
+              <h2 className='text-xl mb-8 h-[2px] bg-gray-500 w-12'>  </h2>
+              {
+                // QuickLinks.map(link => (
+                //   <Link key={link.id} to={link.path} className='hover:text-blue-600 mb-2 flex items-center gap-2' > {<FaArrowRight />} {link.title} </Link>
+                // ))
+              }  
+            </div>
           </div>
-          <div>
-            <Footer.Title title="help center" className='text-bold text-blue-600' />
-            <Footer.LinkGroup col>
-              <Footer.Link href="#" className='text-blue-600'> Discord Server  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Twitter  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Facebook  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'>  Contact Us  </Footer.Link>
-            </Footer.LinkGroup>
+
+          <div className='text-white flex flex-col items-start mb-8' >
+            <div className='flex flex-col justify-start'>
+              <h2 className='text-xl p-1 pl-0'> Quick Links </h2>
+              <h2 className='text-xl mb-8 h-[2px] bg-gray-500 w-12'>  </h2>
+              {
+                QuickLinks.map(link => (
+                  <Link key={link.id} to={link.path} className='hover:text-blue-600 hover:underline mb-2 flex items-center gap-2' > {link.icon} {link.title} </Link>
+                ))
+              }
+            </div>
           </div>
-          <div>
-            <Footer.Title title="legal" className='text-bold text-blue-600' />
-            <Footer.LinkGroup col>
-              <Footer.Link href="#" className='text-blue-600'>  Privacy Policy  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Licensing   </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Terms & Conditions  </Footer.Link>
-            </Footer.LinkGroup>
+
+          <div className='text-white flex flex-col items-start' >
+            <div className='flex flex-col justify-start'>
+              <h2 className='text-xl p-1 pl-0'> Social Media </h2>
+              <h2 className='text-xl mb-8 h-[2px] bg-gray-500 w-12'>  </h2>
+              {
+                SocialLinks.map(link => (
+                  <Link key={link.id} to={link.path} className='hover:text-blue-600 hover:underline mb-2 flex items-center gap-2' > {link.icon} {link.title} </Link>
+                ))
+              }  
+            </div>
           </div>
-          <div>
-            <Footer.Title title="download" className='text-bold text-blue-600' />
-            <Footer.LinkGroup col>
-              <Footer.Link href="#" className='text-blue-600'> iOS </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Android  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'> Windows  </Footer.Link>
-              <Footer.Link href="#" className='text-blue-600'>  MacOS  </Footer.Link>
-            </Footer.LinkGroup>
+
+          <div className='text-white flex flex-col items-start' >
+            <div className='flex flex-col justify-start'>
+              <h2 className='text-xl p-1 pl-0'> Contact </h2>
+              <h2 className='text-xl mb-8 h-[2px] bg-gray-500 w-12'>  </h2>
+              {
+                Contacts.map(contact => (
+                  <div key={contact.id} className='hover:text-blue-600 mb-2 flex items-center gap-2 ' > {contact.icon}  {contact.value} </div>
+                ))
+              }  
+            </div>
           </div>
+
         </div>
-        <div className="w-full bg-gray-700 px-4 py-6 sm:flex sm:items-center sm:justify-center">
-          <Footer.Copyright
-            className='mx-16 text-green-400 font-bold'
-            by="Ticketvibe™"
-            href="/"
-            year={2023}
-          />
-          <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-            <Footer.Icon
-              href="#"
-              icon={BsFacebook}
-            />
-            <Footer.Icon
-              href="#"
-              icon={BsInstagram}
-            />
-            <Footer.Icon
-              href="#"
-              icon={BsTwitter}
-            />
-            <Footer.Icon
-              href="#"
-              icon={BsGithub}
-            />
-          </div>
-        </div>
-      </div>
-    </Footer>
+
+        <div className='text-white text-sm flex justify-center items-center mt-4'> Copyright <FaRegCopyright className='mx-1' /> 2023 Ticketvibe All Rights Reserved. </div>
+    </div>
+
   )
 }
+
+export default Footer;

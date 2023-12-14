@@ -4,7 +4,14 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Card } from 'flowbite-react';
 import { useEventContext } from '../../hooks/useEventContext';
 import { IoOptionsOutline } from "react-icons/io5";
-import { animate, easeOut, motion, spring } from 'framer-motion';
+import { animate, easeInOut, easeOut, motion, spring } from 'framer-motion';
+import { FaArrowRight } from "react-icons/fa6";
+import { IoArrowRedoSharp } from "react-icons/io5";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import loader from '../../images/loading2.gif';
 
 const AllEvents = () => {
 
@@ -115,6 +122,18 @@ const AllEvents = () => {
     
     }, []); // Empty dependency array ensures the effect runs once when the component mounts
 
+    const notify = () => {
+        toast.success('Copied to Clipboard', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }; 
 
     return (
 
@@ -143,24 +162,74 @@ const AllEvents = () => {
                 </div>
             </div>
 
+            {
+                !events ? <img src={loader} alt='Loading...' /> :
+
+            <div>
+
             {searchInput && (!filterEvents || filterEvents.length === 0) && 
                 <div className='flex flex-row justify-center items-center mt-40 mb-32'>
                     <h1 className='font-bold text-lg'> No such Event </h1> 
                 </div>
             }
 
-            <div className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-[27px] lg:gap-[32px] ' >
+            <div className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 md:gap-[27px] lg:gap-[32px] ' >
 
-                {searchInput && filterEvents && filterEvents.map(event => (
-                    <div className='hover:shadow-xl hover:shadow-gray-300' >
+                {searchInput && filterEvents && filterEvents.map((event, index) => (
+                    <motion.div 
+                        className='hover:shadow-2xl hover:shadow-gray-300' 
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                                y: 100
+                            },
+                            show: {
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    type: spring,
+                                    duration: 1,
+                                    delay: 0.15 * index,
+                                    ease: easeInOut
+                                }
+                            }
+                        }}
+                        initial='hidden'
+                        animate='show'
+                    >
 
-                        <Link to={'/event/' + event._id} target='_blank'> 
+                        <Link to={`/event/${event._id}`} target='_blank'> 
                             <Card
                                 imgAlt=""
                                 imgSrc="/images/blog/image-1.jpg"
                             >
-                                <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white flex justify-between">
                                     <p> {event.title} </p>
+                                    <button 
+                                        className='w-8 h-8 border-[1px] border-black rounded-full flex items-center justify-center bg-[#eeeeee]'
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            notify();
+                                            navigator.clipboard.writeText(`/event/${event._id}`);
+                                        }}
+                                    > 
+                                        <div className='text-[16px] '>
+                                            <ToastContainer
+                                                position="top-right"
+                                                autoClose={5000}
+                                                hideProgressBar={false}
+                                                newestOnTop={false}
+                                                closeOnClick
+                                                rtl={false}
+                                                pauseOnFocusLoss
+                                                draggable
+                                                pauseOnHover
+                                                theme="light"
+                                            />    
+                                        </div>
+                                        
+                                        <IoArrowRedoSharp /> 
+                                    </button> 
                                 </h5>
                                 <p className="font-extrabold text-orange-500 dark:text-gray-400">
                                     <p>
@@ -184,26 +253,71 @@ const AllEvents = () => {
                                 </p>
                                 <p className="font-normal text-gray-700 dark:text-gray-400">
                                     <div className='flex flex-row justify-between'> 
-                                        <div> Total Registrations - </div> <div className='text-blue-700 mr-4'> x{event.bookedBy.length} </div>
+                                        <div> Total Registrations - </div> <div className='text-blue-600 mr-4 font-semibold'> x{event.bookedBy.length} </div>
                                     </div>
                                 </p>
 
                             </Card>    
                         </Link>
 
-                    </div>
+                    </motion.div>
                 ))}
 
-                {!searchInput && events && events.map(event => (
-                    <div className='hover:shadow-xl hover:shadow-gray-300' >
+                {!searchInput && events && events.map((event, index) => (
+                    <motion.div 
+                        className='hover:shadow-xl hover:shadow-gray-300'
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                                y: 100
+                            },
+                            show: {
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    type: spring,
+                                    duration: 1,
+                                    delay: 0.15 * index,
+                                    ease: easeInOut
+                                }
+                            }
+                        }}
+                        initial='hidden'
+                        animate='show' 
+                    >
 
-                        <Link to={'/event/' + event._id} target='_blank'> 
+                        <Link to={`/event/${event._id}`} target='_blank'> 
                             <Card
                                 imgAlt=""
                                 imgSrc="/images/blog/image-1.jpg"
                             >
-                                <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white flex justify-between">
                                     <p> {event.title} </p>
+                                    <button 
+                                        className='w-8 h-8 border-[1px] border-black rounded-full flex items-center justify-center bg-[#eeeeee]'
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            notify();
+                                            navigator.clipboard.writeText(`/event/${event._id}`);
+                                        }}
+                                    > 
+                                        <div className='text-[16px] '>
+                                            <ToastContainer
+                                                position="top-right"
+                                                autoClose={5000}
+                                                hideProgressBar={false}
+                                                newestOnTop={false}
+                                                closeOnClick
+                                                rtl={false}
+                                                pauseOnFocusLoss
+                                                draggable
+                                                pauseOnHover
+                                                theme="light"
+                                            />    
+                                        </div>
+                                        
+                                        <IoArrowRedoSharp /> 
+                                    </button> 
                                 </h5>
                                 <p className="font-bold text-orange-500 dark:text-gray-400">
                                     <p>
@@ -227,72 +341,106 @@ const AllEvents = () => {
                                 </p>
                                 <p className="font-normal text-gray-700 dark:text-gray-400">
                                     <div className='flex flex-row justify-between'> 
-                                        <div> Total Registrations - </div> <div className='text-blue-700 mr-4'> x{event.bookedBy.length} </div>
+                                        <div> Total Registrations - </div> <div className='text-blue-600 mr-4 font-semibold'> x{event.bookedBy.length} </div>
                                     </div>
                                 </p>
     
                             </Card>    
                         </Link>
                         
-                    </div>
+                    </motion.div>
                 ))}  
 
             </div>
 
             {
                 showFilter && 
-                <motion.div 
-                    variants={{
-                        hidden: {
-                            opacity: 0,
-                            x: 150
-                        },
-                        show: {
-                            opacity: 1,
-                            x: 0,
-                            transition: {
-                                duration: 0.25,
-                                delay: 0.25,
-                                type: spring,
-                                ease: easeOut
+
+                <>
+                    <motion.div 
+                        className='fixed top-0 left-0 h-full z-20 w-[55%] md:w-[60%] lg:w-[65%] xl:[75%] 2xl:w-[80%] bg-white'
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                                x: 150
+                            },
+                            show: {
+                                opacity: 0.75,
+                                x: 0,
+                                transition: {
+                                    duration: 0.25,
+                                    type: 'tween',
+                                    ease: [0.17, 0.67, 0.83, 0.67]
+                                }
                             }
-                        }
-                    }}
-                    initial='hidden'
-                    animate='show'
-                    ref={FilterRef}
-                    id='FilterSheet'
-                    className='fixed top-0 right-0 h-full w-[45%] md:w-[40%] lg:w-[35%] xl:[25%] 2xl:w-[20%] bg-[#1f2937] text-white z-20 p-8'
-                >
-                    <button
-                        className='fixed top-[16px] right-3 text-white'
-                        onClick={() => setShowFilter(false)}
+                        }}
+                        initial='hidden'
+                        animate='show'
                     >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"     className="w-6 h-6 scale-125">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    </button>
-                    <div className='my-8 w-full h-full px-4 flex flex-col'>
-                        Filter Events
+                    </motion.div>
+                    
+                    <motion.div 
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                                x: 150
+                            },
+                            show: {
+                                opacity: 1,
+                                x: 0,
+                                transition: {
+                                    duration: 0.25,
+                                    type: 'tween',
+                                    ease: [0.17, 0.67, 0.83, 0.67]
+                                }
+                            }
+                        }}
+                        initial='hidden'
+                        animate='show'
+                        ref={FilterRef}
+                        id='FilterSheet'
+                        className='fixed top-0 right-0 h-full z-30 w-[45%] md:w-[40%] lg:w-[35%] xl:[25%] 2xl:w-[20%] bg-[#1f2937] text-white  p-8'
+                    >
                         <button
-                            className='focus:text-orange-500'
-                            onClick={() => {
-                                setShowFilter(false);
-                                handleFilter('registered');
-                            }}
+                            className='fixed top-[16px] right-3 text-white rounded-full border-2 border-gray-500 p-1 '
+                            onClick={() => setShowFilter(false)}
                         >
-                            Sort by Registrations
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"     className="w-6 h-6 scale-100">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                         </button>
-                        <button
-                            onClick={() => {
-                                setShowFilter(false);
-                                handleFilter('');
-                            }}
-                        >
-                            Reset
-                        </button>
-                    </div>
-                </motion.div>
+
+                        <div className='border-2 border-gray-500 my-16 w-full p-2' >
+                            <div className='flex items-center gap-[6px] mb-4'> <FaArrowRight /> Filter Events </div> 
+                            <div className='flex flex-col items-center h-fit'>
+                                <button
+                                    className='hover:text-blue-600'
+                                    onClick={() => {
+                                        setShowFilter(false);
+                                        handleFilter('registered');
+                                    }}
+                                >
+                                    <div className='flex items-center justify-center gap-2'> <input type='radio' className='hover:cursor-pointer' /> Sort by Registrations </div> 
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setShowFilter(false);
+                                        handleFilter('');
+                                    }}
+                                    className='flex-end bg-[#eeeeee] text-black mt-8 p-[2px] px-1 h-fit w-fit'
+                                >
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                    </motion.div>
+                </>
+                
+            }
+
+            </div>
+            
             }
 
         </div>

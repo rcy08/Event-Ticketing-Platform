@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import AllEvents from './pages/events/AllEvents';
@@ -13,22 +13,75 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import Footer from './components/Footer';
 import NotFound from './pages/NotFound';
+import Loading from './Loading';
 
 import { useAuthContext } from './hooks/useAuthContext';
 
 function App() {
 
-  const { signedin } = useAuthContext();
+  const { signedin, dispatch } = useAuthContext();
 
-  const { path } = useLocation();
+  setTimeout(() => {
+    if(signedin){
+      localStorage.removeItem('userToken');
+      dispatch({ type: 'SIGNOUT' });
+      window.location.reload();
+    }
+  }, 24*60*60*1000);
+
+  let location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [path]);
+  }, [location]);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const handleWindowLoad = () => {
+      setLoading(false);
+    };
+
+    if (document.readyState === 'complete') {
+      setLoading(false);
+    } else {
+      window.addEventListener('load', handleWindowLoad);
+    }
+
+    return () => {
+      window.removeEventListener('load', handleWindowLoad);
+    };
+  }, []);
+
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  // the required distance between touchStart and touchEnd to be detected as a swipe
+  const minSwipeDistance = 50; 
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null); // otherwise the swipe is fired even with usual touch events
+    setTouchStart(e.targetTouches[0].clientX);
+  }
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe || isRightSwipe) console.log('swipe', isLeftSwipe ? 'left' : 'right');
+    // add your conditional logic here
+  };
 
   return (
 
-      <div className='absolute left-0 right-0 top-0 min-h-[100vh] flex flex-col'>
+    <>
+    {
+      loading ? <Loading /> : 
+
+      <div className='absolute left-0 right-0 top-0 min-h-[100vh] bg-[#f1f5f9] flex flex-col' onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
 
         <Navbar />
         <Routes>
@@ -82,6 +135,9 @@ function App() {
         <Footer />
 
       </div>
+    }
+      
+    </>
     
   );
 }
