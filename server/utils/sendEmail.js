@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 const client_id = process.env.GMAIL_CLIENT_ID;
@@ -17,9 +14,6 @@ const sendEmail = async (options) => {
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
         auth: {
             type: 'OAuth2',
             user: 'userauthms@gmail.com',
@@ -47,4 +41,4 @@ const sendEmail = async (options) => {
     });
 }
 
-module.exports = sendEmail; 
+module.exports = sendEmail;
