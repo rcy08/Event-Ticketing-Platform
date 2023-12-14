@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 const client_id = process.env.GMAIL_CLIENT_ID;
