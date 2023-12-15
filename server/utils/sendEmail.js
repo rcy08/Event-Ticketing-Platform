@@ -9,11 +9,16 @@ const oauth2client = new google.auth.OAuth2(client_id, client_secret, redirect_u
 oauth2client.setCredentials({ refresh_token });
 
 const sendEmail = async (options) => {
+
+    console.log(refresh_token);
     
     const accessToken = await oauth2client.getAccessToken();
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
             type: 'OAuth2',
             user: 'userauthms@gmail.com',
@@ -41,4 +46,4 @@ const sendEmail = async (options) => {
     });
 }
 
-module.exports = sendEmail;
+module.exports = sendEmail; 
