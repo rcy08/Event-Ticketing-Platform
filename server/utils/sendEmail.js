@@ -10,7 +10,7 @@ oauth2client.setCredentials({ refresh_token: '1//042Pi3zJeMUPnCgYIARAAGAQSNwF-L9
 
 const sendEmail = async (options) => {
 
-    console.log(refresh_token);
+    // console.log(refresh_token);
     
     const accessToken = await oauth2client.getAccessToken();
 

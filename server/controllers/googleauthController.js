@@ -45,7 +45,7 @@ const googleUserSignin = async (req, res) => {
     });  
 };
 
-googleUserSignin().catch(console.error);
+// googleUserSignin().catch(console.error);
 
 const googleUserSignup = async (req, res) => {
 
@@ -88,6 +88,6 @@ const googleUserSignup = async (req, res) => {
     
 }
 
-googleUserSignup().catch(console.error);
+// googleUserSignup().catch(console.error);
 
 module.exports = { googleUserSignin, googleUserSignup };
