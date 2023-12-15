@@ -21,7 +21,7 @@ const clearErrors = () => {
     };
 }
 
-const signup = async (req,res) => {
+const signup = async (req, res) => {
 
     const { fname, lname, username, email, password, dob } = req.body;
 
