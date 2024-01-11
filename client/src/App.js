@@ -1,6 +1,6 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
 import AllEvents from './pages/events/AllEvents';
 import Event from './pages/events/Event';
@@ -14,18 +14,30 @@ import ResetPassword from './pages/auth/ResetPassword';
 import Footer from './components/Footer';
 import NotFound from './pages/NotFound';
 import Loading from './Loading';
+import Loader from './Loader';
 
 import { useAuthContext } from './hooks/useAuthContext';
+import { useLoadingContext } from './hooks/useLoadingContext';
+import UserEvents from './pages/events/UserEvents';
 
 function App() {
 
   const { signedin, dispatch } = useAuthContext();
+  const { loadingState, loadingDispatch } = useLoadingContext();
+  const navigate = useNavigate();
+
+  const currentUrl = new URL(window.location.href);
+  const searchParams = new URLSearchParams(currentUrl.search);
 
   setTimeout(() => {
     if(signedin){
       localStorage.removeItem('userToken');
       dispatch({ type: 'SIGNOUT' });
-      window.location.reload();
+      searchParams.set('redirect_uri', currentUrl);
+      for (const key of searchParams.keys()) {
+        if(key !== 'redirect_uri') searchParams.delete(key);
+      }
+      navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
     }
   }, 24*60*60*1000);
 
@@ -33,7 +45,8 @@ function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location]);
+    loadingDispatch({ type: 'LOADING' });
+  }, [window.location.href]);
 
   const [loading, setLoading] = useState(true);
 
@@ -53,6 +66,8 @@ function App() {
     };
   }, []);
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
 
@@ -71,19 +86,22 @@ function App() {
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
-    if (isLeftSwipe || isRightSwipe) console.log('swipe', isLeftSwipe ? 'left' : 'right');
-    // add your conditional logic here
+    if(isLeftSwipe && window.screen.width < 640) setIsOpen(true);
+    if(isRightSwipe && window.screen.width < 640) setIsOpen(false);
   };
 
   return (
 
     <>
+    
     {
       loading ? <Loading /> : 
 
       <div className='absolute left-0 right-0 top-0 min-h-[100vh] bg-[#f1f5f9] flex flex-col' onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
 
-        <Navbar />
+        { loadingState && <Loader /> }
+
+        <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
         <Routes>
 
             <Route 
@@ -97,6 +115,10 @@ function App() {
             <Route 
               path='/event/:id'
               element={<Event />}
+            />
+            <Route 
+              path='/events/my'
+              element={ signedin ? <UserEvents /> : <Navigate to='/auth/signin' /> }
             />
             <Route 
               path='/events/create'
@@ -115,7 +137,7 @@ function App() {
               element={ !signedin ? <SignIn /> : <Navigate to='/' /> }
             />
             <Route 
-              path='/auth/email-verification/:verificationToken'
+              path='/auth/email-verification'
               element={ !signedin ? <EmailVerification /> : <Navigate to='/' /> }
             />
             <Route 
@@ -132,6 +154,7 @@ function App() {
             />
 
         </Routes>
+
         <Footer />
 
       </div>

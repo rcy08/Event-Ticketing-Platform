@@ -43,7 +43,7 @@ export const EventContextProvider = ({ children }) => {
 
     }, []);
 
-    console.log('EventContextState', state);
+    // console.log('EventContextState', state);
 
     return (
         <EventContext.Provider value={{ ...state, dispatch }}>

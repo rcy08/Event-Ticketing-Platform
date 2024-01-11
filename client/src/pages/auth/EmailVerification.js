@@ -1,17 +1,21 @@
 
 import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const EmailVerification = () => {
 
-    const { verificationToken } = useParams();
+    const currentUrl = new URL(window.location.href);
+    const searchParams = new URLSearchParams(currentUrl.search);
+
+    const verificationToken = searchParams.get('token');
+    console.log(verificationToken);
     const navigate = useNavigate();
 
     useEffect(() => {
 
         const Verify = async () => {
 
-            const response = await fetch(`https://ticketvibeserver.cyclic.app/auth/email-verification/${verificationToken}`, {
+            const response = await fetch(`https://ticketvibeserver.cyclic.app/auth/email-verification?token=${verificationToken}`, {
                 method : 'POST',
                 headers: { 'Content-Type' : 'application/json' },
             });
@@ -24,7 +28,9 @@ const EmailVerification = () => {
             else{
                 alert('Email Verified!');
             }
-            navigate('/auth/signin');
+            searchParams.delete('token');
+            searchParams.set('redirect_uri', '/');
+            navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
         }
 
         Verify();
@@ -32,7 +38,7 @@ const EmailVerification = () => {
     });
 
     return (
-        <div className="container bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ..."> 
+        <div className=""> 
             
         </div>
     );

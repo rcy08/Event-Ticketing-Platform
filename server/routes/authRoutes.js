@@ -13,9 +13,9 @@ router.post('/signin', signin);
 
 router.post('/forgot-password', forgotPassword);
 
-router.post('/email-verification/:verificationToken', emailVerification);
+router.post('/email-verification', emailVerification);
 
-router.post('/reset-password/:resetToken', resetPassword);
+router.post('/reset-password', resetPassword);
 
 router.get('/user-details', auth, userDetails);
 
@@ -23,6 +23,6 @@ router.post('/google-user/signin', googleUserSignin);
 
 router.post('/google-user/signup', googleUserSignup);
 
-router.delete('/delete-account/:id', deleteAccount);
+router.delete('/delete-account', deleteAccount);
 
 module.exports = router;

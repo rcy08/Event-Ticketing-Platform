@@ -58,33 +58,35 @@ const ResetPassword = () => {
 
     return (
 
-        <div className="h-[100vh] flex items-center justify-center mt-12">
+        <div className="h-fit flex items-center justify-center mt-40 mb-40">
 
-            <form className='rounded relative bg-white p-4 sm:p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[45%] min-[1075px]:w-[32%] xl:w-[27%] 2xl:w-[22%] shadow-2xl shadow-gray-400' onSubmit={handleSubmit}>
+            <form className='rounded relative bg-white p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[45%] min-[1075px]:w-[32%] xl:w-[27%] 2xl:w-[22%] shadow-2xl shadow-gray-400' onSubmit={handleSubmit}>
 
                 <h1 className='text-center text-2xl font-semibold mb-6'> Reset Password </h1>
 
                     <div className="relative z-0 w-full mb-6 group">
-                        <input type="password" name="floating_password" id="floating_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
+                        <input type="password" name="floating_password" className="peer primary-input" placeholder=" " required 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <label for="floating_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+                        <label for="floating_password" className="peer primary-label"> <div className='flex'> Password 
+                        <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                         <div className='peer-focus:font-medium text-xs text-red-500'> {errors.password} </div>
                     </div>
                     
                     <div className="relative z-0 w-full mb-6 group">
-                        <input type="password" name="repeat_password" id="floating_repeat_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
+                        <input type="password" name="repeat_password" className="peer primary-input" placeholder=" " required 
                             value={confirmpassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
-                        <label for="floating_repeat_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirm Password</label>
+                        <label for="floating_repeat_password" className="peer primary-label"> <div className='flex'> Confirm Password 
+                        <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                         <div className='peer-focus:font-medium text-xs text-red-500'> {errors.confirmpassword} </div>
                     </div>
 
                     {!status && 
                         <div className='flex justify-center'>
-                            <button className="w-[110px] text-white border-2 border-[#eeeeee] bg-orange-500 hover:bg-white hover:text-orange-500 hover:border-orange-500 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mt-4">
+                            <button className="w-[110px] primary-btn font-semibold text-[15px] px-5 py-[10px] text-center mt-4">
                                 Submit
                             </button> 
                         </div>

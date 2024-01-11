@@ -3,37 +3,75 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    fname:{
+    fname: {
         type: String,
         required: true,
     },
-    lname:{
+    lname: {
         type: String,
     },
-    username:{
-        type: String,
-        required: true,
-    },
-    email:{
+    username: {
         type: String,
         required: true,
     },
-    password:{
+    email: {
         type: String,
         required: true,
     },
-    dob:{
+    password: {
         type: String,
+    },
+    dob: {
+        type: Date,
         required: true,
     },
-    emailVerificationToken: String,
-    emailVerificationExpire: Date,
+    bio: {
+        type: String,
+    },
+    imgUrl: {
+        type: String,
+    },
     isVerified: {
         type: Boolean,
         default: false
     },
+    authModes: [String],
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
+    events: {
+        booked: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'event'
+            }
+        ],
+        organized: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'event'
+            }
+        ],
+        saved: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'event'
+            }
+        ],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date
+    },
+    emailVerificationToken: String,
+    emailVerificationExpire: Date,
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-}, { timestamps: true });
+});
 
 module.exports = mongoose.model('user', userSchema);

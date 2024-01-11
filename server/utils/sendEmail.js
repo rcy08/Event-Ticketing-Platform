@@ -2,17 +2,17 @@ const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 const client_id = process.env.GMAIL_CLIENT_ID;
 const client_secret = process.env.GMAIL_CLIENT_SECRET;
-const refresh_token = '1//042Pi3zJeMUPnCgYIARAAGAQSNwF-L9IrSAqJoIRFkrviu_n623K8u5FHvepY_JQD5UPLrbQ1GAZZGm2oiRvj6nq-ykUwWFIS-9g';
+const refresh_token = process.env.GMAIL_REFRESH_TOKEN;
 const redirect_uri = process.env.REDIRECT_URI;
 
+const oauth2client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
+oauth2client.setCredentials({ refresh_token });
+
 const sendEmail = async (options) => {
-
-    console.log(refresh_token);
-
-    const oauth2client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
-    oauth2client.setCredentials({ refresh_token });
     
+    console.log('refresh token: ', refresh_token);
     const accessToken = await oauth2client.getAccessToken();
+    console.log('access token: ', accessToken);
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',

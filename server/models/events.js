@@ -8,32 +8,109 @@ const eventSchema = new Schema({
         required: true,
     },
     start: {
-        type: String,
+        type: Date,
         required: true,
     },
     end: {
-        type: String,
+        type: Date,
+        required: true,
     },
-    reg_start:{
-        type: String,
+    reg_start: {
+        type: Date,
+        required: true,
     },
-    reg_end:{
+    reg_end: {
+        type: Date,
+        required: true,
+    },
+    mode: {
         type: String,
-        required: true
+        enum: ['online', 'offline'],
+        default: 'online'
     },
     venue: {
-        type: String,
-        required: true
+        name: {
+            type: String,
+        },
+        address: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+        coordinates: [
+            {
+                type: Number,
+            }
+        ]
     },
     description: {
         type: String,
-    },
-    createdBy: {
-        type: String,
         required: true
     },
-    bookedBy: [String],
-    tags: [String]
-}, { timestamps: true });
+    images: [
+        {
+            type: String,
+        }
+    ],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    bookedBy: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+        }
+    ],
+    savedBy: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+        }
+    ],
+    comments: [
+        {
+            text: {
+                type: String
+            },
+            date: {
+                type: Date,
+                default: Date.now
+            },
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'user'
+            },
+            likes:{
+                type: Number,
+                default: 0
+            }
+        }
+    ],
+    rating: {
+        value: {
+            type: mongoose.Schema.Types.Decimal128,
+            default: 0.0
+        },
+        count: {
+            type: Number,
+            default: 0
+        }
+    },
+    tags: [
+        {
+            type: String,
+        }
+    ]
+});
 
 module.exports = mongoose.model('event', eventSchema);

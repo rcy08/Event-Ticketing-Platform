@@ -1,17 +1,32 @@
 
 import { useState, useEffect } from 'react';
+import { useLoadingContext } from '../../hooks/useLoadingContext';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import GoogleSignUpPopup from './GoogleSignUpPopup';
+
+import { getStorage } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import app from '../../firebase';
+
+import FileUpload from '../../components/FileUpload';
 
 const SignUp = () => {
 
-    const [fname, setFname] = useState('');
-    const [lname, setLname] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmpassword, setConfirmPassword] = useState('');
-    const [username, setUsername] = useState('');
-    const [dob, setDob] = useState('');
+    const [formData, setFormData] = useState({
+        fname: '', lname: '', email: '', password: '', confirmpassword: '', username: '', dob: ''
+    });
+
+    const { loadingDispatch } = useLoadingContext();
+    
+    const currentUrl = new URL(window.location.href);
+    const searchParams = new URLSearchParams(currentUrl.search);
+    const [open, setOpen] = useState(false);
+    
+    // const storage = getStorage(app);
+    // const [image, setImage] = useState('');
+    // const [percent, setPercent] = useState(0);
+    // const [imgUrl, setImgUrl] = useState('');
 
     const [errors, setErrors] = useState({});
 
@@ -20,8 +35,8 @@ const SignUp = () => {
     useEffect(() => {
 
         const handleCheck = () => {
-            if(password.length > 0 && confirmpassword.length > 0){
-                if(password !== confirmpassword){
+            if(formData.password.length > 0 && formData.confirmpassword.length > 0){
+                if(formData.password !== formData.confirmpassword){
                     setErrors({ ...errors, confirmpassword: `Passwords don't match` });
                 }
                 else{
@@ -35,12 +50,12 @@ const SignUp = () => {
 
         document.addEventListener('click', handleCheck);  
     
-    }, [password, confirmpassword]);
+    }, [formData.password, formData.confirmpassword]);
 
     useEffect(() => {
 
         const handleCheck = () => {
-            if(password.length > 0 && password.length < 6){
+            if(formData.password.length > 0 && formData.password.length < 6){
                 setErrors({ ...errors, password: 'Minimum length of password is 6 characters' });
             }
             else{
@@ -50,12 +65,12 @@ const SignUp = () => {
 
         document.addEventListener('click', handleCheck);  
     
-    }, [password]);
+    }, [formData.password]);
 
     useEffect(() => {
 
         const handleCheck = () => {
-            if(username.length > 0 && username.length < 4){
+            if(formData.username.length > 0 && formData.username.length < 4){
                 setErrors({ ...errors, username: 'Minimum length of username is 4 characters' });
             }
             else{
@@ -65,12 +80,12 @@ const SignUp = () => {
 
         document.addEventListener('click', handleCheck);  
     
-    }, [username]);
+    }, [formData.username]);
 
     useEffect(() => {
 
         const handleCheck = () => {
-            if(fname.length > 0 && fname.length < 4){
+            if(formData.fname.length > 0 && formData.fname.length < 4){
                 setErrors({ ...errors, fname: 'Minimum length of first name is 4 characters' });
             }
             else{
@@ -80,50 +95,62 @@ const SignUp = () => {
 
         document.addEventListener('click', handleCheck);  
     
-    }, [fname]);
+    }, [formData.fname]);
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
-        if (password === confirmpassword && password.length >= 6 && username.length >= 4 && fname.length >= 4) {
+        if (formData.password === formData.confirmpassword && formData.password.length >= 6 && formData.username.length >= 4 && formData.fname.length >= 4) {
+
+            loadingDispatch({ type: 'LOADING' });
 
             const response = await fetch('https://ticketvibeserver.cyclic.app/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type' : 'application/json' },
-                body: JSON.stringify({ fname, lname, username, email, password, dob })
+                body: JSON.stringify({ 
+                    fname: formData.fname, 
+                    lname: formData.lname, 
+                    username: formData.username, 
+                    email: formData.email, 
+                    password: formData.password, 
+                    dob: formData.dob, 
+                    imgUrl: '',
+                    token: '',
+                    client_id: '',
+                    authMode: 'Email' 
+                })
             });
 
             const data = await response.json();
+
+            loadingDispatch({ type: 'RESET' });
 
             if (data.errors) {
                 setErrors(data.errors);
             }
             else {
                 setErrors({});
-                setFname('');
-                setLname('');
-                setEmail('');
-                setPassword('');
-                setConfirmPassword('');
-                setUsername('');
-                setDob('');
+                setFormData({ fname: '', lname: '', email: '', password: '', confirmpassword: '', username: '', dob: '' });
                 alert('Please verify your email id through the link sent on your email');
-                navigate('/auth/signin');
-            }   
+                searchParams.set('redirect_uri', '/');
+                navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+            }
+
         }
+
         else{
-            if (fname.length < 4) {
+            if (formData.fname.length < 4) {
                 setErrors({
                     fname: 'Minimum length of first Name is 4 Characters',
                 })
             }
-            else if (username.length < 4) {
+            else if (formData.username.length < 4) {
 				setErrors({
 					username: 'Minimum length of username is 4 characters',
 				});
 			}
-			else if (password.length < 6) {
+			else if (formData.password.length < 6) {
 				setErrors({
 					password: 'Minimum length of password is 6 characters',
 				});
@@ -137,30 +164,19 @@ const SignUp = () => {
 
     }
 
+    const [user, setUser] = useState(null);
+    const [response, setResponse] = useState(null);
+
     const handleCredentialResponse = async (response) => {
 
         /* global google */
 
-        var userObject = jwt_decode(response.credential);
+        setResponse(response);
+        setUser(jwt_decode(response.credential));
 
-        console.log(userObject);
-    
-        const res = await fetch('https://ticketvibeserver.cyclic.app/auth/google-user/signup', {
-            method: 'POST',
-            headers: { 'Content-Type' : 'application/json' },
-            body: JSON.stringify({ userObject, token: response.credential, client_id: '707253678289-0bbj3lbd22h8r8q5bs6d5b2mj7vc2cec.apps.googleusercontent.com',  })
-        });
+        console.log(jwt_decode(response.credential));
 
-        const data = await res.json();
-
-        if(data.error){
-            alert(data.error);
-            if(data.error === 'This account is already registered. Please signin now') navigate('/auth/signin');
-            return;
-        }
-        
-        alert(data.message);
-        navigate('/auth/signin');
+        setOpen(true);
         
     }
 
@@ -181,84 +197,123 @@ const SignUp = () => {
                 size: 'large',
                 width: '200'
                 }
-            );    
+            );
         }
+
+        loadingDispatch({ type: 'RESET' });
         
     }, []);
 
     return (
+
+        <>
+
+        {open && 
+            <GoogleSignUpPopup 
+                open={open} 
+                setOpen={setOpen} 
+                formData={formData} 
+                setFormData={setFormData}
+                response={response}
+                user={user} 
+            />
+        } 
         
-        <div className="h-[100vh] flex items-center justify-center mt-36 min-[400px]:mt-32 md:mt-8 "> 
+        <div className="h-fit flex items-center justify-center mt-36 min-[400px]:mt-32 md:mt-28 mb-24"> 
             
-            <form className="rounded relative bg-white p-4 md:p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[45%] min-[1075px]:w-[32%] xl:w-[27%] 2xl:w-[22%] shadow-2xl shadow-gray-400" onSubmit={handleSubmit}>
+            <form className="rounded relative bg-white p-8 w-[85%] min-[550px]:w-[60%] sm:w-[52%] md:w-[45%] min-[1075px]:w-[32%] xl:w-[27%] 2xl:w-[22%] shadow-2xl shadow-gray-400" onSubmit={handleSubmit}>
 
                 <h1 className='text-center text-2xl font-semibold mb-6'> SignUp </h1>
 
                 <div className="relative z-0 w-full mb-6 group">
-                    <input type="email" name="floating_email" id="floating_email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                    <input type="email" name="floating_email" id="floating_email" className="peer primary-input" placeholder=" " required 
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                     />
-                    <label for="floating_email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+                    <label for="floating_email" className="peer primary-label"> <div className='flex'> Email address 
+                    <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                     <div className='peer-focus:font-medium text-xs text-red-500'> {errors.email} </div>
                 </div>
 
                 <div className="relative z-0 w-full mb-6 group">
-                    <input type="password" name="floating_password" id="floating_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                    <input type="password" name="floating_password" id="floating_password" className="peer primary-input" placeholder=" " required 
+                        value={formData.password}
+                        onChange={(e) => setFormData({...formData, password: e.target.value})}
                     />
-                    <label for="floating_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+                    <label for="floating_password" className="peer primary-label"> <div className='flex'> Password 
+                    <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                     <div className='peer-focus:font-medium text-xs text-red-500'> {errors.password} </div>
                 </div>
 
                 <div className="relative z-0 w-full mb-6 group">
-                    <input type="password" name="repeat_password" id="floating_repeat_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
-                        value={confirmpassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    <input type="password" name="repeat_password" id="floating_repeat_password" className="peer primary-input" placeholder=" " required 
+                        value={formData.confirmpassword}
+                        onChange={(e) => setFormData({...formData, confirmpassword: e.target.value})}
                     />
-                    <label for="floating_repeat_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirm password</label>
+                    <label for="floating_repeat_password" className="peer primary-label"> <div className='flex'> Confirm Password 
+                    <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                     <div className='peer-focus:font-medium text-xs text-red-500'> {errors.confirmpassword} </div>
                 </div>
 
                 <div className="grid sm:grid-cols-2 sm:gap-6">
                     <div className="relative z-0 w-full mb-6 group">
-                        <input type="text" name="floating_first_name" id="floating_first_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
-                            value={fname}
-                            onChange={(e) => setFname(e.target.value)}
+                        <input type="text" name="floating_first_name" id="floating_first_name" className="peer primary-input" placeholder=" " required 
+                            value={formData.fname}
+                            onChange={(e) => setFormData({...formData, fname: e.target.value})}
                         />
-                        <label for="floating_first_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">First name</label>
+                        <label for="floating_first_name" className="peer primary-label"> <div className='flex'> First Name 
+                        <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                         <div className='peer-focus:font-medium text-xs text-red-500 w-32'> {errors.fname} </div>
                     </div>
                     <div className="relative z-0 w-full mb-6 group">
-                        <input type="text" name="floating_last_name" id="floating_last_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " 
-                            value={lname}
-                            onChange={(e) => setLname(e.target.value)}
+                        <input type="text" name="floating_last_name" id="floating_last_name" className="peer primary-input" placeholder=" " 
+                            value={formData.lname}
+                            onChange={(e) => setFormData({...formData, lname: e.target.value})}
                         />
-                        <label for="floating_last_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last name</label>
+                        <label for="floating_last_name" className="peer primary-label">Last name</label>
                     </div>
-                    
                 </div>
 
                 <div className="grid sm:grid-cols-2 sm:gap-6">
 
                     <div className="relative z-0 w-full mb-6 group">
-                        <input type="text" name="floating_phone" id="floating_phone" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "   value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                        <input type="text" name="floating_phone" id="floating_phone" className="peer primary-input" placeholder=" "   
+                            value={formData.username}
+                            onChange={(e) => setFormData({...formData, username: e.target.value})}
                         />
-                        <label for="floating_phone" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Username</label>
+                        <label for="floating_phone" className="peer primary-label"> <div className='flex'> Username 
+                        <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                         <div className='peer-focus:font-medium text-xs text-red-500 w-32'> {errors.username} </div>
                     </div>
                     
                     <div className='relative z-0 w-full mb-6 group'>
-                        <input type="date" name='floating_dob' className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Date of Birth" 
-                            value={dob}
-                            onChange={(e) => setDob(e.target.value)}
+                        <input type="date" name='floating_dob' className="peer primary-input" placeholder="Date of Birth" 
+                            value={formData.dob}
+                            onChange={(e) => setFormData({...formData, dob: e.target.value})}
                         />
-                        <label for='floating_dob' className='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'> Date of Birth </label>
+                        <label for='floating_dob' className='peer primary-label'> <div className='flex'> Date of Birth 
+                        <p className='text-red-500 items-start scale-[90%]'> * </p> </div> </label>
                     </div>
 
                 </div>
+
+                {/* <div className="grid grid-cols-1">
+                    <div className="relative z-0 w-full mb-6 group">
+                        <textarea rows={2} type="text" name="floating_bio" id="floating_phone" className="peer primary-input"
+                            value={formData.bio}
+                            onChange={(e) => setFormData({...formData, bio: e.target.value})}
+                        />
+                        <label for="floating_bio" className="peer primary-label"> Bio </label>
+                        {
+                            bio && bio.length < 3 && <div className='text-red-500 text-[12px]'> Minimum length of bio is 3 characters </div>
+                        }
+                    </div>
+                </div> */}
+
+                {/*  <div className="flex flex-col justify-left w-fit mb-4">
+                    <div className='flex flex-row'> <FileUpload image={image} setImage={setImage} /> <p className='text-red-500 items-start scale-[90%]'> * </p> </div> 
+                    <p className='text-sm'> {image && image.name} </p>
+                </div>*/}
 
                 <div className="flex items-start mb-6">
                     <div className="flex items-center h-5">
@@ -268,10 +323,10 @@ const SignUp = () => {
                 </div>
 
                 <div className='flex justify-center'>
-                    <button className="w-[110px] text-white border-2 border-[#eeeeee] bg-orange-500 hover:bg-white hover:text-orange-500 hover:border-orange-500 rounded-sm font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
-                </div>   
+                    <button className="w-[110px] primary-btn font-semibold text-[15px] px-5 py-[10px] text-center mb-4">Submit</button>    
+                </div>
 
-                <div className='w-full flex items-center'> <hr className='h-[2px] w-1/2 bg-[#bebebe]'/> <p className='mx-[5px] text-[12px] text-black'> OR </p>  <hr className='h-[2px] w-1/2 bg-[#bebebe]'/></div> 
+                <div className='w-full flex items-center'> <hr className='h-[2px] w-1/2 bg-[#bebebe]'/> <p className='mx-[5px] text-[12px] text-black'> or </p>  <hr className='h-[2px] w-1/2 bg-[#bebebe]'/></div> 
 
                 <div className='flex justify-center'> <div id='signUpDiv' className='mt-4 mb-5 flex justify-center'>  </div> </div>
                 
@@ -280,6 +335,8 @@ const SignUp = () => {
             </form>
         
         </div>
+
+        </>
 
     );
 }
