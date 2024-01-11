@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import GoogleSignUpPopup from './GoogleSignUpPopup';
 
-import { getStorage } from "firebase/storage";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import app from '../../firebase';
-
 import FileUpload from '../../components/FileUpload';
 
 const SignUp = () => {
@@ -22,11 +18,6 @@ const SignUp = () => {
     const currentUrl = new URL(window.location.href);
     const searchParams = new URLSearchParams(currentUrl.search);
     const [open, setOpen] = useState(false);
-    
-    // const storage = getStorage(app);
-    // const [image, setImage] = useState('');
-    // const [percent, setPercent] = useState(0);
-    // const [imgUrl, setImgUrl] = useState('');
 
     const [errors, setErrors] = useState({});
 
