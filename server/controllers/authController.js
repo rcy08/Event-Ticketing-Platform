@@ -9,6 +9,7 @@ const downloadAndUploadImage = require('../utils/downloadAndUploadImage');
 const fs = require('fs').promises; // Using fs.promises for async file operations
 const bucket = require('../utils/initializeFirebase');
 const dateConvertor = require('../utils/dateConvertor');
+const deleteFile = require('../utils/deleteFile');
 
 const client = new OAuth2Client();
 
@@ -83,17 +84,7 @@ const signup = async (req, res) => {
 
             const imagePath = `../server/images/${savedUser._id}.png`;
 
-            fs.promises.access(imagePath, fs.constants.R_OK)
-                .then(() => {
-                    fs.unlink(imagePath)
-                    .then(() => console.log('File deleted successfully'))
-                    .catch((err) => console.log(err))
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-
-            // await fs.unlink();
+            await deleteFile(imagePath);
 
             const verificationUrl = `https://ticketvibe.vercel.app/auth/email-verification?token=${verificationToken}`;
 
@@ -150,17 +141,7 @@ const signup = async (req, res) => {
 
             const imagePath = `../server/images/${savedUser._id}.png`;
 
-            fs.promises.access(imagePath, fs.constants.R_OK)
-                .then(() => {
-                    fs.unlink(imagePath)
-                    .then(() => console.log('File deleted successfully'))
-                    .catch((err) => console.log(err))
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-
-            // await fs.unlink();
+            await deleteFile(imagePath);
 
             const eventsUrl = 'https://ticketvibe.vercel.app/events';
 
