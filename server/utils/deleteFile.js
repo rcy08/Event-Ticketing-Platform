@@ -1,7 +1,5 @@
 const fs = require('fs').promises;
 
-const imagePath = `../server/images/${savedUser._id}.png`;
-
 const deleteFile = async (filePath) => {
   try {
     // Check if the file is readable (R_OK)
