@@ -174,7 +174,7 @@ const deleteEvent = async (req, res) => {
 
 const bookEvent = async (req, res) => {
 
-    const { userId, eventId  } = req.query;
+    const { userId, eventId } = req.query;
 
     if (!mongoose.Types.ObjectId.isValid(eventId)) {
         errors = "No such event";

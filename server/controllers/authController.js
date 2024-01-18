@@ -8,6 +8,7 @@ const uploadImage = require('../utils/uploadImage');
 const downloadAndUploadImage = require('../utils/downloadAndUploadImage');
 const fs = require('fs').promises; // Using fs.promises for async file operations
 const bucket = require('../utils/initializeFirebase');
+const dateConvertor = require('../utils/dateConvertor');
 
 const client = new OAuth2Client();
 
@@ -72,11 +73,15 @@ const signup = async (req, res) => {
 
             const savedUser = await User.findOne({ email });
 
-            const image = await uploadImage('../server/images/default-user.png', `users/${savedUser._id}/profilePicture`);
+            const defaultUserImg = 'https://firebasestorage.googleapis.com/v0/b/ticketvibe.appspot.com/o/default-user.png?alt=media&token=f0514669-0595-452a-936d-153f5b12138e';
+
+            const image = await downloadAndUploadImage(defaultUserImg, `../server/images/${savedUser._id}.png`, `users/${savedUser._id}/profilePicture`);
 
             savedUser.imgUrl = image;
 
             await savedUser.save();
+
+            await fs.unlink(`../server/images/${savedUser._id}.png`);
 
             const verificationUrl = `https://ticketvibe.vercel.app/auth/email-verification?token=${verificationToken}`;
 
@@ -270,6 +275,19 @@ const signin = async (req, res) => {
             select: 'title start end reg_start reg_end venue description images rating tags'
         });
 
+        const resetUrl = 'https://ticketvibe.vercel.app/auth/forgot-password';
+
+        const message = `
+            <p> A new login was detected at ${dateConvertor(Date.now())}. If it's you, safely ignore this message otherwise immediately change your password at <a href=${resetUrl}>here</a>. </p>
+        `;
+
+        await sendEmail({
+            from: 'userauthms@gmail.com',
+            to: user.email,
+            subject: 'New Login Detected',
+            html: message
+        });
+
         res.status(200).json({ token, user });
 
     }
@@ -314,6 +332,19 @@ const signin = async (req, res) => {
                 path: 'events.booked events.organized events.saved',
                 model: 'event',
                 select: 'title start end reg_start reg_end venue description images rating tags'
+            });
+
+            const resetUrl = 'https://ticketvibe.vercel.app/auth/forgot-password';
+
+            const message = `
+                <p> A new login was detected at ${dateConvertor(Date.now())} in your local timezone. If it's you, safely ignore this message otherwise immediately change your password at <a href=${resetUrl}>here</a>. </p>
+            `;
+
+            await sendEmail({
+                from: 'userauthms@gmail.com',
+                to: user.email,
+                subject: 'New Login Detected',
+                html: message
             });
     
             res.status(200).json({ token, user });

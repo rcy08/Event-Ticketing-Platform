@@ -43,4 +43,3 @@ app.use((req, res, next) => {
 app.use('/auth', authRoutes);
 
 app.use('/events', eventRoutes);
-
