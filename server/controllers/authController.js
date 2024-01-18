@@ -10,6 +10,7 @@ const fs = require('fs').promises; // Using fs.promises for async file operation
 const bucket = require('../utils/initializeFirebase');
 const dateConvertor = require('../utils/dateConvertor');
 const deleteFile = require('../utils/deleteFile');
+const uploadImageToStorage = require('../utils/uploadToFirebase');
 
 const client = new OAuth2Client();
 
@@ -133,15 +134,17 @@ const signup = async (req, res) => {
 
             const savedUser = await User.findOne({ email });
 
-            const image = await downloadAndUploadImage(imgUrl, `../server/images/${savedUser._id}.png` , `users/${savedUser._id}/profilePicture`);
+            const image = await uploadImageToStorage(imgUrl, `users/${savedUser._id}/profilePicture`);
+
+            // const image = await downloadAndUploadImage(imgUrl, `../server/images/${savedUser._id}.png` , `users/${savedUser._id}/profilePicture`);
 
             savedUser.imgUrl = image;
 
             await savedUser.save();
 
-            const imagePath = `../server/images/${savedUser._id}.png`;
+            // const imagePath = `../server/images/${savedUser._id}.png`;
 
-            await deleteFile(imagePath);
+            // await deleteFile(imagePath);
 
             const eventsUrl = 'https://ticketvibe.vercel.app/events';
 
