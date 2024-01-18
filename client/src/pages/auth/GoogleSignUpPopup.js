@@ -11,8 +11,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
 
 export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData, user, response }) {
 
@@ -187,22 +185,20 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
 
                     <div className='w-full h-fit flex flex-row items-center justify-center'>
                         {
-                            pending ? 
+                            status === 'pending' ? 
 
-                            <LoadingButton
+                            <Button
                                 style={{
                                     textTransform: 'none',
                                     fontSize: '14.5px',
                                     padding: '0 25px',
+                                    backgroundColor: '#C2410C',
                                 }}
-                                endIcon={<SendIcon />}
-                                loading={true}
-                                loadingPosition="end"
                                 variant="contained"
                                 className='h-[42px]'
                             >
                                 Processing...
-                            </LoadingButton>
+                            </Button>
 
                             :
 
