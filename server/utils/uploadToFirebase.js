@@ -42,9 +42,3 @@ const uploadImageToStorage = async (imageUrl, destinationPath) => {
 };
 
 module.exports = uploadImageToStorage;
-  
-//   // Example usage
-//   const imageUrl = 'https://example.com/path/to/image.jpg'; // Replace with the actual image URL
-//   const destinationPath = 'images/image.jpg'; // Specify the desired destination path in Firebase Storage
-  
-//   uploadImageToStorage(imageUrl, destinationPath);

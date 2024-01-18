@@ -11,6 +11,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SendIcon from '@mui/icons-material/Send';
 
 export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData, user, response }) {
 
@@ -18,7 +20,7 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
         username: '', dob: ''
     });
 
-    const navigate = useNavigate();
+    const [status, setStatus] = useState('');
     const { loadingDispatch } = useLoadingContext();
 
     const currentUrl = new URL(window.location.href);
@@ -43,9 +45,9 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
 
         e.preventDefault();
 
-        if(formData.username.length >= 4 && formData.dob){
+        if(status !== 'pending' && formData.username.length >= 4 && formData.dob){
 
-            loadingDispatch({ type: 'LOADING' });
+            setStatus('pending');
 
             const res = await fetch('https://ticketvibeserver.cyclic.app/auth/signup', {
                 method: 'POST',
@@ -66,7 +68,7 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
 
             const data = await res.json();
 
-            loadingDispatch({ type: 'RESET' });
+            setStatus('');
 
             if(data.errors){
                 setErrors(data.errors);
@@ -82,6 +84,7 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
 
         }
         else{
+            if(status === 'pending') return;
             if(formData.username.length < 4){
                 setErrors({ ...errors, username: 'Minimum length of username is 4 characters' });
             }
@@ -183,19 +186,41 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
                 <DialogActions className='h-20 mt-2 mb-2'>
 
                     <div className='w-full h-fit flex flex-row items-center justify-center'>
-                        <Button 
-                            style={{
-                                textTransform: 'none',
-                                fontSize: '14.5px',
-                                padding: '0 25px',
-                                backgroundColor: '#C2410C',
-                            }}
-                            variant="contained"
-                            onClick={handleSubmit}
-                            className='h-[42px]'
+                        {
+                            pending ? 
+
+                            <LoadingButton
+                                style={{
+                                    textTransform: 'none',
+                                    fontSize: '14.5px',
+                                    padding: '0 25px',
+                                }}
+                                endIcon={<SendIcon />}
+                                loading={true}
+                                loadingPosition="end"
+                                variant="contained"
+                                className='h-[42px]'
                             >
-                        Continue
-                        </Button>  
+                                Processing...
+                            </LoadingButton>
+
+                            :
+
+                            <Button 
+                                style={{
+                                    textTransform: 'none',
+                                    fontSize: '14.5px',
+                                    padding: '0 25px',
+                                    backgroundColor: '#C2410C',
+                                }}
+                                variant="contained"
+                                onClick={handleSubmit}
+                                className='h-[42px]'
+                            >
+                                Continue
+                            </Button>      
+
+                        }
                     </div>
 
                 </DialogActions>

@@ -181,12 +181,13 @@ const SignUp = () => {
         
             google.accounts.id.renderButton(
                 document.getElementById('signUpDiv'),
-                { type: 'standard', 
-                theme: 'filled_blue', 
-                text: 'signup_with',
-                ux_mode: 'popup', 
-                size: 'large',
-                width: '200'
+                {   
+                    type: 'standard', 
+                    theme: 'filled_blue', 
+                    text: 'signup_with',
+                    ux_mode: 'popup', 
+                    size: 'large',
+                    width: '200'
                 }
             );
         }

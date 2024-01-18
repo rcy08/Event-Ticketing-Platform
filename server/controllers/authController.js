@@ -4,12 +4,8 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/sendEmail');
 const { OAuth2Client } = require('google-auth-library');
-const uploadImage = require('../utils/uploadImage');
-const downloadAndUploadImage = require('../utils/downloadAndUploadImage');
-const fs = require('fs').promises; // Using fs.promises for async file operations
 const bucket = require('../utils/initializeFirebase');
 const dateConvertor = require('../utils/dateConvertor');
-const deleteFile = require('../utils/deleteFile');
 const uploadImageToStorage = require('../utils/uploadToFirebase');
 
 const client = new OAuth2Client();
@@ -77,15 +73,11 @@ const signup = async (req, res) => {
 
             const defaultUserImg = 'https://firebasestorage.googleapis.com/v0/b/ticketvibe.appspot.com/o/default-user.png?alt=media&token=f0514669-0595-452a-936d-153f5b12138e';
 
-            const image = await downloadAndUploadImage(defaultUserImg, `../server/images/${savedUser._id}.png`, `users/${savedUser._id}/profilePicture`);
+            const image = await uploadImageToStorage(defaultUserImg, `users/${savedUser._id}/profilePicture`);
 
             savedUser.imgUrl = image;
 
             await savedUser.save();
-
-            const imagePath = `../server/images/${savedUser._id}.png`;
-
-            await deleteFile(imagePath);
 
             const verificationUrl = `https://ticketvibe.vercel.app/auth/email-verification?token=${verificationToken}`;
 
@@ -136,15 +128,9 @@ const signup = async (req, res) => {
 
             const image = await uploadImageToStorage(imgUrl, `users/${savedUser._id}/profilePicture`);
 
-            // const image = await downloadAndUploadImage(imgUrl, `../server/images/${savedUser._id}.png` , `users/${savedUser._id}/profilePicture`);
-
             savedUser.imgUrl = image;
 
             await savedUser.save();
-
-            // const imagePath = `../server/images/${savedUser._id}.png`;
-
-            // await deleteFile(imagePath);
 
             const eventsUrl = 'https://ticketvibe.vercel.app/events';
 
