@@ -118,7 +118,7 @@ const Event = () => {
         if (!signedin) {
             searchParams.set('redirect_uri', currentUrl);
             searchParams.set('action', 'book_event');
-            navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+            window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
             return;
         }
 

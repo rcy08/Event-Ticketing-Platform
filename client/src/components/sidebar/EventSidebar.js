@@ -214,8 +214,7 @@ export default function TemporaryDrawer({ showFilter, setShowFilter }) {
               <div className='w-full flex flex-row justify-center gap-4 mb-4'>
                 <button
                   onClick={() => {
-                    navigate(`/events?${searchParams.toString()}${currentUrl.hash}`);
-                    window.location.reload();
+                    window.location.href = `/events?${searchParams.toString()}${currentUrl.hash}`;
                   }}
                   className='flex-end rounded h-fit w-fit'
                 >
@@ -236,8 +235,7 @@ export default function TemporaryDrawer({ showFilter, setShowFilter }) {
                 </button>
                 <button
                   onClick={() => {
-                    navigate('/events');
-                    window.location.reload();
+                    window.location.href = '/events';
                   }}
                   className='flex-end rounded h-fit w-fit'
                 >

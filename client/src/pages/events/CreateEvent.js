@@ -48,13 +48,12 @@ const CreateEvent = () => {
         if (!user) {
             if(!searchParams.get('redirect_uri')) searchParams.set('redirect_uri', currentUrl);
             dispatch({ type: 'SIGNOUT' });
-            navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+            window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
         }
 
         if(!searchParams.get('redirect_uri')){
             searchParams.set('redirect_uri', '/events');
-            navigate(`/events/create?${searchParams.toString()}${currentUrl.hash}`);
-            window.location.reload();
+            window.location.href = `/events/create?${searchParams.toString()}${currentUrl.hash}`;
         } 
 
         loadingDispatch({ type: 'RESET' });

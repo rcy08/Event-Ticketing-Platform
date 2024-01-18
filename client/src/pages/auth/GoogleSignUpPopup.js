@@ -78,7 +78,7 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
             
             // alert(data.message);
             searchParams.set('redirect_uri', '/');
-            navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);    
+            window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;    
 
         }
         else{
@@ -205,7 +205,7 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
                     <button
                         onClick={() => {
                             searchParams.set('redirect_uri', '/');
-                            navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+                            window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
                         }}
                         className='ml-1 text-blue-600 hover:underline'
                     >

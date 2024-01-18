@@ -37,7 +37,7 @@ function App() {
       for (const key of searchParams.keys()) {
         if(key !== 'redirect_uri') searchParams.delete(key);
       }
-      navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+      window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
     }
   }, 24*60*60*1000);
 

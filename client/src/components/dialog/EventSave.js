@@ -98,7 +98,7 @@ export default function CustomizedDialogs({ openSave, setOpenSave, setShowShare,
               onClick={() => {
                 searchParams.set('redirect_uri', `/event/${event._id}`);
                 searchParams.set('action', 'save_event');
-                navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+                window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
               }} 
               className='h-[42px]'
             >

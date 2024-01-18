@@ -30,7 +30,7 @@ const EmailVerification = () => {
             }
             searchParams.delete('token');
             searchParams.set('redirect_uri', '/');
-            navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+            window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
         }
 
         Verify();

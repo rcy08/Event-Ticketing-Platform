@@ -57,8 +57,7 @@ const AllEvents = () => {
         const maxPage = Math.ceil(data.count / limitInput);
         if(pageInput > maxPage){
             searchParams.set('page', maxPage);
-            navigate(`/events?${searchParams.toString()}${currentUrl.hash}`);
-            navigate(0);
+            window.location.href = `/events?${searchParams.toString()}${currentUrl.hash}`;
         }
         
         // localStorage.setItem('events', JSON.stringify(data));
@@ -84,8 +83,7 @@ const AllEvents = () => {
             if(!searchParams.get('q')) return;
             searchParams.delete('q');
         } 
-        navigate(`/events?${searchParams.toString()}${currentUrl.hash}`);
-        navigate(0);
+        window.location.href = `/events?${searchParams.toString()}${currentUrl.hash}`;
     };
 
     const FilterRef = useRef(null);
@@ -220,16 +218,14 @@ const AllEvents = () => {
                         onPageChange={(e, page) => {
                             if(page > 0) searchParams.set('page', page + 1);
                             else searchParams.delete('page'); 
-                            navigate(`/events?${searchParams.toString()}${currentUrl.hash}`);
-                            navigate(0);
+                            window.location.href = `/events?${searchParams.toString()}${currentUrl.hash}`;
                         }}
                         rowsPerPage={Number(limitInput)}
                         labelRowsPerPage='Events per page'
                         onRowsPerPageChange={(e) => {
                             if(e.target.value > 0) searchParams.set('limit', e.target.value);
                             else searchParams.delete('limit');
-                            navigate(`/events?${searchParams.toString()}${currentUrl.hash}`);
-                            navigate(0);
+                            window.location.href = `/events?${searchParams.toString()}${currentUrl.hash}`;
                         }}
                         rowsPerPageOptions={[...(Array.from({ length: count }, (_, index) => index + 1)), { value: count, label: 'All' }]}
                         showFirstButton={true}

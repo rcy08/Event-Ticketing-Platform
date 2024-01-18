@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const ResetPassword = () => {
 
@@ -9,9 +9,11 @@ const ResetPassword = () => {
 
     const [errors, setErrors] = useState({});
     const [status, setStatus] = useState('');
-    const navigate = useNavigate();
 
     const { resetToken } = useParams();
+
+    const currentUrl = new URL(window.location.href);
+    const searchParams = new URLSearchParams(currentUrl.search);
 
     const handleSubmit = async (e) => {
 
@@ -38,8 +40,9 @@ const ResetPassword = () => {
                 setErrors({});
                 setPassword('');
                 setConfirmPassword('');
-                navigate('/auth/signin');
-            }    
+                searchParams.set('redirect_uri', '/');
+                window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
+            }
 
         }
         else {

@@ -22,7 +22,8 @@ const ProfileDropdown = ({ menuId, anchorEl, setAnchorEl, userDetails }) => {
     for (const key of searchParams.keys()) {
       if(key !== 'redirect_uri') searchParams.delete(key);
     }
-    navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+    window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
+    window.location.reload();
   }
 
   const menuItems = [
@@ -81,7 +82,7 @@ const ProfileDropdown = ({ menuId, anchorEl, setAnchorEl, userDetails }) => {
               key={item.id}
               onClick={() => {
                 handleMenuClose();
-                navigate(item.url);
+                window.location.href = item.url;
               }}
               className={`w-full px-4 py-3 text-white text-sm font-normal flex justify-start items-center tracking-widest border-t-[1px] border-gray-600 hover:border-gray-500 hover:bg-gray-900 hover:opacity-[80%] `}
             > 

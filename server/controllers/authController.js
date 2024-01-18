@@ -75,13 +75,13 @@ const signup = async (req, res) => {
 
             const defaultUserImg = 'https://firebasestorage.googleapis.com/v0/b/ticketvibe.appspot.com/o/default-user.png?alt=media&token=f0514669-0595-452a-936d-153f5b12138e';
 
-            const image = await downloadAndUploadImage(defaultUserImg, `../server/images/${savedUser._id}.png`, `users/${savedUser._id}/profilePicture`);
+            const image = await downloadAndUploadImage(defaultUserImg, `../images/${savedUser._id}.png`, `users/${savedUser._id}/profilePicture`);
 
             savedUser.imgUrl = image;
 
             await savedUser.save();
 
-            await fs.unlink(`../server/images/${savedUser._id}.png`);
+            await fs.unlink(`../images/${savedUser._id}.png`);
 
             const verificationUrl = `https://ticketvibe.vercel.app/auth/email-verification?token=${verificationToken}`;
 
@@ -130,13 +130,13 @@ const signup = async (req, res) => {
 
             const savedUser = await User.findOne({ email });
 
-            const image = await downloadAndUploadImage(imgUrl, `../server/images/${savedUser._id}.png` , `users/${savedUser._id}/profilePicture`);
+            const image = await downloadAndUploadImage(imgUrl, `../images/${savedUser._id}.png` , `users/${savedUser._id}/profilePicture`);
 
             savedUser.imgUrl = image;
 
             await savedUser.save();
 
-            await fs.unlink(`../server/images/${savedUser._id}.png`);
+            await fs.unlink(`../images/${savedUser._id}.png`);
 
             const eventsUrl = 'https://ticketvibe.vercel.app/events';
 
