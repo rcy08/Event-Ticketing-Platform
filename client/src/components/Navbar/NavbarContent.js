@@ -112,8 +112,8 @@ const NavbarContent = ({ isOpen, setIsOpen, navAtTop }) => {
           {
             NavbarLinks.map((link, index) => (
               <li key={link.id} className='mr-4 md:mr-8 lg:mr-12 hover:text-orange-500' >
-                <Link 
-                  to={link.path} 
+                <button 
+                  onClick={() => window.location.href = link.path}
                   onMouseEnter={() => {setShowBar(true); setI(index)}}
                   onMouseLeave={() => {setShowBar(false); setI(index)}}
                 >
@@ -149,7 +149,7 @@ const NavbarContent = ({ isOpen, setIsOpen, navAtTop }) => {
                       exit={!showBar && i === index ? 'leave' : 'show'}
                     > </motion.div>   
                   </div>
-                </Link> 
+                </button> 
               </li>
             ))
           }
@@ -190,14 +190,16 @@ const NavbarContent = ({ isOpen, setIsOpen, navAtTop }) => {
                   const currentUrl = new URL(window.location.href);
                   const searchParams = new URLSearchParams(currentUrl.search);
                   if(!searchParams.get('redirect_uri')) searchParams.set('redirect_uri', currentUrl);
-                  navigate(`/auth/signin?${searchParams.toString()}${currentUrl.hash}`);
+                  window.location.href = `/auth/signin?${searchParams.toString()}${currentUrl.hash}`;
                 }}
                 className={`mr-3 primary-btn ${!navAtTop && 'hover:shadow-md hover:shadow-[#0015ff]'} font-medium`}
               >
                 <p className='py-[6px] px-[8px]'> SignIn </p> 
               </button>
               <button
-                onClick={() => navigate('/auth/signup')}
+                onClick={() => {
+                  window.location.href = '/auth/signup';
+                }}
                 className={`sm:mr-3 primary-btn ${!navAtTop && 'hover:shadow-md hover:shadow-[#0015ff]'} font-medium`}
               >
                 <p className='py-[6px] px-[8px]'> SignUp </p> 

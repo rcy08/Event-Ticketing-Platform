@@ -3,17 +3,16 @@ import { useRef, useEffect, useState } from 'react';
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
 import NavbarContent from './NavbarContent';
 import { easeOut, motion, spring } from 'framer-motion';
-import { useLoadingContext } from '../../hooks/useLoadingContext';
 
 const Navbar = ({ isOpen, setIsOpen }) => {
   
   const [navAtTop, setNavAtTop] = useState(true);
-  const { loadingDispatch } = useLoadingContext();
 
   const width = window.screen.width;
+  const navbarHeight = (width < 640 ? 80 : 65);
 
   window.addEventListener('scroll', () => {
-    if(window.scrollY > 0){
+    if(window.scrollY > navbarHeight){
       setNavAtTop(false);
     }
     else{
@@ -21,20 +20,13 @@ const Navbar = ({ isOpen, setIsOpen }) => {
     }
   });
 
-  let offsetTop;
-  let offsetBottom;
   let offsetLeft;
-  let offsetRight;
 
   const element = document.getElementById('navbar');
 
   if (element) {
     const rect = element.getBoundingClientRect();
-
-    offsetTop = rect.top;
-    offsetBottom = rect.bottom;
     offsetLeft = rect.left;
-    offsetRight = rect.right;
   }
 
   return (
@@ -56,7 +48,7 @@ const Navbar = ({ isOpen, setIsOpen }) => {
 
         :
 
-        <div className={`fixed top-0 left-0 z-10 w-full flex flex-row h-[${width < 640 ? 80 : 65}px] justify-center bg-[#1f2937]`}>
+        <div className={`fixed top-0 left-0 z-10 w-full flex flex-row h-[${navbarHeight}px] justify-center bg-[#1f2937]`}>
 
           <motion.nav
             variants={{
@@ -64,10 +56,10 @@ const Navbar = ({ isOpen, setIsOpen }) => {
                 height: 0
               },
               show: {
-                height: (width < 640 ? 80 : 65),
+                height: navbarHeight,
                 transition: {
                   type: spring,
-                  duration: 0.25,
+                  duration: 0.65,
                   stiffness: 400,
                   ease: easeOut
                 }
@@ -88,7 +80,7 @@ const Navbar = ({ isOpen, setIsOpen }) => {
                   x: 0,
                   transition: {
                     type: spring,
-                    duration: 0.5,
+                    duration: 0.65,
                     stiffness: 400,
                     ease: easeOut
                   }

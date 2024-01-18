@@ -15,6 +15,7 @@
     "flowbite-react": "^0.5.0",
     "framer-motion": "^10.16.5",
     "heroicons": "^2.0.18",
+    "intersection-observer": "^0.12.2",
     "jwt-decode": "^3.1.2",
     "react-dom": "^18.2.0",
     "react-horizontal-scrolling-menu": "^4.1.1",

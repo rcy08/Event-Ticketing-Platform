@@ -52,7 +52,7 @@ const Home = () => {
 
         <div className='flex flex-row justify-center'>
         
-        <div className="w-full max-w-[2000px] h-full mb-0 ">
+        <div className="w-full max-w-[2000px] h-full mb-16 ">
 
             <div className='mt-32 sm:mt-44 md:mt-60 lg:mt-32 xl:mt-24 mx-[20px] min-[500px]:mx-[50px] sm:mx-8 xl:mx-16 2xl:mx-24 min-h-[70vh] sm:min-h-[100vh] text-left grid grid-cols-1 xl:grid-cols-2 gap-4 '>
 
@@ -60,7 +60,10 @@ const Home = () => {
                     <div className='min-[350px]:text-[38px] min-[375px]:text-[40px] min-[450px]:text-[45px] sm:text-[48px] md:text-[52px] font-bold leading-[150%] '> <div className='md:flex lg:block gap-4'> <p className='head-black'> Online </p> <p className=' text-[45px] sm:text-[54px] md:text-[60px] head-blue'> Event Booking </p> </div> <p className='head-black'> now made simple </p> </div>  
 
                     <div className='bg-[#0015ff] w-fit h-fit mt-20 rounded hover:shadow-lg hover:shadow-[#cacaca]'>
-                        <Link to='/events' className='w-fit h-fit' >
+                        <button 
+                            onClick={() => window.location.href = '/events'}
+                            className='w-fit h-fit' 
+                        >
                             <motion.button
                                 className='bg-orange-500 text-lg text-white px-4 py-4 font-semibold rounded hover:text-white hover:border-2'
                                 whileHover={{
@@ -70,7 +73,7 @@ const Home = () => {
                             > 
                                 <div className='flex justify-center items-center gap-3'> <p className='head-white'> Book Your Next Event </p>  <FaArrowRight /> </div>  
                             </motion.button>   
-                        </Link>
+                        </button>
                     </div> 
                 </div>
                 

@@ -224,6 +224,7 @@ const AllEvents = () => {
                             navigate(0);
                         }}
                         rowsPerPage={Number(limitInput)}
+                        labelRowsPerPage='Events per page'
                         onRowsPerPageChange={(e) => {
                             if(e.target.value > 0) searchParams.set('limit', e.target.value);
                             else searchParams.delete('limit');
