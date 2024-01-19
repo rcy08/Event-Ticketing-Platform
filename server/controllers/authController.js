@@ -52,7 +52,7 @@ const signup = async (req, res) => {
             res.status(401).json({ errors });
         }
         else{
-
+            
             const salt = await bcrypt.genSalt(10);
 
             const Password = await bcrypt.hash(password, salt);
