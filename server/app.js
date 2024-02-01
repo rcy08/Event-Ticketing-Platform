@@ -23,7 +23,6 @@ else {
     const express = require('express');
     const mongoose = require('mongoose');
     const compression = require('compression');
-    require('./utils/redisClient');
 
     const authRoutes = require('./routes/authRoutes'); 
     const eventRoutes = require('./routes/eventRoutes'); 
