@@ -1,8 +1,7 @@
 const Event = require('../models/events');
 const User = require('../models/user');
 const mongoose = require('mongoose');
-const redisClient = require('../utils/redisClient');
-const client = redisClient;
+const client = require('../utils/redisClient');
 
 let errors = "";
 

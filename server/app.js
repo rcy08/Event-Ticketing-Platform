@@ -3,8 +3,6 @@ require('dotenv').config();
 const cluster = require('cluster');
 const os = require('os');
 
-const redisClient = require('./utils/redisClient');
-
 if (cluster.isMaster) {
     // Fork workers based on the number of CPU cores
     const numCPUs = os.cpus().length;
@@ -25,6 +23,7 @@ else {
     const express = require('express');
     const mongoose = require('mongoose');
     const compression = require('compression');
+    require('./utils/redisClient');
 
     const authRoutes = require('./routes/authRoutes'); 
     const eventRoutes = require('./routes/eventRoutes'); 

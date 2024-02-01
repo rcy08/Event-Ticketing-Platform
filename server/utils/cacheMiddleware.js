@@ -1,5 +1,4 @@
-const redisClient = require('./redisClient');
-const client = redisClient;
+const client = require('./redisClient');
 
 const cacheMiddleware = (req, res, next) => {
     const key = req.originalUrl || req.url;
