@@ -1,5 +1,5 @@
-const redis = require('redis');
-const client = redis.createClient();
+const redisClient = require('./redisClient');
+const client = redisClient;
 
 const cacheMiddleware = (req, res, next) => {
     const key = req.originalUrl || req.url;
@@ -15,4 +15,4 @@ const cacheMiddleware = (req, res, next) => {
     });
 };
 
-module.exports = { client, cacheMiddleware };
+module.exports = { cacheMiddleware };

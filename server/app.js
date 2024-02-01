@@ -3,6 +3,8 @@ require('dotenv').config();
 const cluster = require('cluster');
 const os = require('os');
 
+const redisClient = require('./utils/redisClient');
+
 if (cluster.isMaster) {
     // Fork workers based on the number of CPU cores
     const numCPUs = os.cpus().length;
