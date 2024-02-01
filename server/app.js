@@ -1,45 +1,69 @@
 require('dotenv').config();
 
-const express = require('express');
-const mongoose = require('mongoose');
+const cluster = require('cluster');
+const os = require('os');
 
-const authRoutes = require('./routes/authRoutes'); 
-const eventRoutes = require('./routes/eventRoutes'); 
+if (cluster.isMaster) {
+    // Fork workers based on the number of CPU cores
+    const numCPUs = os.cpus().length;
+  
+    for (let i = 0; i < numCPUs; i++) {
+      cluster.fork();
+    }
+  
+    // Handle worker death and respawn
+    cluster.on('exit', (worker, code, signal) => {
+      console.log(`Worker ${worker.process.pid} died. Restarting...`);
+      cluster.fork();
+    });
+} 
+else {
+    // Your regular Node.js server logic here
 
-const cors = require('cors');
+    const express = require('express');
+    const mongoose = require('mongoose');
+    const compression = require('compression');
 
-const app = express();
+    const authRoutes = require('./routes/authRoutes'); 
+    const eventRoutes = require('./routes/eventRoutes'); 
 
-app.use(express.json());
-app.use(cors());
+    const cors = require('cors');
 
-app.use(
-    cors({
-      origin: "https://ticketvibe.vercel.app",
-      credentials: true,
-    })
-  );
+    const app = express();
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        app.listen(process.env.PORT, () => {
-            console.log(`Connected to db and listening on port ${process.env.PORT}`);
-        });
-    })
+    app.use(express.json());
+    app.use(compression());
+    app.use(cors());
 
-app.use((req, res, next) => {
-    res.setHeader(
-        "Access-Control-Allow-Origin",
-        "https://ticketvibe.vercel.app"
+    app.use(
+        cors({
+            origin: "https://ticketvibe.vercel.app",
+            credentials: true,
+        })
     );
-    res.header(
-        "Access-Control-Allow-Origin",
-        "Origin,X-Requested-With,Content-Type,Accept",
-        "Access-Control-Allow-Methods: GET, DELETE, PUT, PATCH, HEAD, OPTIONS, POST"
-    );
-    next();
+
+    mongoose.connect(process.env.MONGO_URI)
+        .then(() => {
+            app.listen(process.env.PORT, () => {
+                console.log(`Connected to db and listening on port ${process.env.PORT}`);
+            });
+        })
+
+    app.use((req, res, next) => {
+        res.setHeader(
+            "Access-Control-Allow-Origin",
+            "https://ticketvibe.vercel.app"
+        );
+        res.header(
+            "Access-Control-Allow-Origin",
+            "Origin,X-Requested-With,Content-Type,Accept",
+            "Access-Control-Allow-Methods: GET, DELETE, PUT, PATCH, HEAD, OPTIONS, POST"
+        );
+        next();
     });
 
-app.use('/auth', authRoutes);
+    app.use('/auth', authRoutes);
 
-app.use('/events', eventRoutes);
+    app.use('/events', eventRoutes);
+
+}

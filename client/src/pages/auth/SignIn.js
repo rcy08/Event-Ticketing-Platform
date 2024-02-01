@@ -67,6 +67,8 @@ const SignIn = () => {
         let userObject = jwt_decode(response.credential);
 
         console.log(userObject);
+
+        loadingDispatch({ type: 'LOADING' });
     
         const res = await fetch('https://ticketvibeserver.cyclic.app/auth/signin', {
             method: 'POST',
@@ -81,6 +83,8 @@ const SignIn = () => {
         });
 
         const data = await res.json();
+
+        loadingDispatch({ type: 'RESET' });
 
         if (data.errors) {
             setErrors(data.errors);

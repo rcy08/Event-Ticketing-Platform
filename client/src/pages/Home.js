@@ -5,11 +5,11 @@ import { motion } from 'framer-motion';
 import { FaArrowRight } from "react-icons/fa";
 import { useLoadingContext } from '../hooks/useLoadingContext';
 
-import img1 from '../images/img1.jpg'; 
-import img2 from '../images/img2.jpg'; 
-import img3 from '../images/img3.jpg'; 
-import img4 from '../images/img4.jpg'; 
-import img5 from '../images/img5.png'; 
+import img1 from '../images/img1.webp'; 
+import img2 from '../images/img2.webp'; 
+import img3 from '../images/img3.webp'; 
+import img4 from '../images/img4.webp'; 
+import img5 from '../images/img5.webp'; 
 
 const images = [
     {
@@ -82,7 +82,7 @@ const Home = () => {
 
                         {
                             images.map(image => (
-                                <img key={image.id} src={image.src} alt={image.alt} />
+                                <img key={image.id} loading='lazy' src={image.src} alt={image.alt} />
                             ))
                         }
 

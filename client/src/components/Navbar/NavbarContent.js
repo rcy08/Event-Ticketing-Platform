@@ -99,7 +99,7 @@ const NavbarContent = ({ isOpen, setIsOpen, navAtTop }) => {
           <button
             className='text-2xl head-orange'
             onClick={() => {
-              if(currentUrl.pathname === '/') window.scrollTo(0, 0);
+              if(currentUrl.pathname === '/') window.scrollTo({top: 0, behavior: 'smooth'});
               else window.location.href = '/';
             }}
           >

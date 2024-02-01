@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
@@ -330,7 +331,7 @@ const TemporaryDrawer = ({ isOpen, setIsOpen }) => {
       {['right'].map((anchor) => (
         <React.Fragment key={anchor}>
           {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
-          <Drawer
+          <SwipeableDrawer
             anchor={anchor}
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
@@ -339,7 +340,7 @@ const TemporaryDrawer = ({ isOpen, setIsOpen }) => {
             }}
           >
             {list(anchor)}
-          </Drawer>
+          </SwipeableDrawer>
         </React.Fragment>
       ))}
     </div>

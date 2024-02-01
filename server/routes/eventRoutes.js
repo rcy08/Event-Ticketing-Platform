@@ -6,9 +6,11 @@ const { auth } = require('../middlewares/auth');
 
 const { allEvents, getEvent, createEvent, updateEvent, deleteEvent, bookEvent } = require('../controllers/eventController');
 
-router.post('/', allEvents);
+const { cacheMiddleware } = require('../utils/cacheMiddleware');
 
-router.get('/:id', getEvent);
+router.post('/', cacheMiddleware, allEvents);
+
+router.get('/:id', cacheMiddleware, getEvent);
 
 router.post('/create', auth, createEvent);
 

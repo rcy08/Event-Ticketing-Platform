@@ -1,6 +1,7 @@
 const Event = require('../models/events');
 const User = require('../models/user');
 const mongoose = require('mongoose');
+const { client } = require('../utils/cacheMiddleware');
 
 let errors = "";
 
@@ -61,6 +62,11 @@ const allEvents = async (req, res) => {
 
     const count = await Event.find(query).count();
 
+    const key = req.originalUrl || req.url;
+    const responseData = { events, count };
+
+    client.setex(key, 3600, JSON.stringify(responseData)); // Cache for 1 hour
+
     res.status(200).json({ events, count });
 
 };
@@ -91,6 +97,11 @@ const getEvent = async (req, res) => {
         errors = "No such event";
         return res.status(404).json({ errors });
     }
+
+    const key = req.originalUrl || req.url;
+    const responseData = { event };
+
+    client.setex(key, 3600, JSON.stringify(responseData)); // Cache for 1 hour
 
     res.status(200).json({ event });
 };
