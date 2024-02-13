@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SERVER_DOMAIN } from '../../constants/index';
 
 const EmailVerification = () => {
 
@@ -15,7 +16,7 @@ const EmailVerification = () => {
 
         const Verify = async () => {
 
-            const response = await fetch(`https://ticketvibeserver.cyclic.app/auth/email-verification?token=${verificationToken}`, {
+            const response = await fetch(`${SERVER_DOMAIN}/auth/email-verification?token=${verificationToken}`, {
                 method : 'POST',
                 headers: { 'Content-Type' : 'application/json' },
             });

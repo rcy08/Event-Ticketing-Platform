@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SERVER_DOMAIN } from '../../constants/index';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { ThemeProvider } from '@mui/material/styles';
@@ -16,7 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { animate, easeInOut, easeOut, motion, spring } from 'framer-motion';
 import { FaArrowRight } from "react-icons/fa6";
 
-import loader from '../../images/loading2.gif';
+import { loading2Url, pageTitle } from '../../constants/index';
 
 import EventCard from '../../components/EventCard';
 import EventSidebar from '../../components/sidebar/EventSidebar';
@@ -44,7 +45,7 @@ const AllEvents = () => {
 
     const getEvents = async () => {
             
-        const response = await fetch(`https://ticketvibeserver.cyclic.app/events?q=${searchInput}&sort=${sortInput}&pageNumber=${Math.max(pageInput, 1)}&pageLimit=${Math.max(limitInput, 1)}&${countryInput && `country=${countryInput}`}&${modeInput && `mode=${modeInput}`}`, {
+        const response = await fetch(`${SERVER_DOMAIN}/events?q=${searchInput}&sort=${sortInput}&pageNumber=${Math.max(pageInput, 1)}&pageLimit=${Math.max(limitInput, 1)}&${countryInput && `country=${countryInput}`}&${modeInput && `mode=${modeInput}`}`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
         });
@@ -67,6 +68,8 @@ const AllEvents = () => {
     useEffect(() => {
         
         getEvents();
+
+        document.title = pageTitle.events;
 
         loadingDispatch({ type: 'RESET' });
         
@@ -152,7 +155,7 @@ const AllEvents = () => {
                 events === null ? 
 
                 <div className='w-full h-[50vh] flex items-center justify-center'>
-                    <img src={loader} alt='Loading...' className='w-20 h-20' /> 
+                    <img src={loading2Url} alt='Loading...' className='w-20 h-20' /> 
                 </div>
                     
                     :

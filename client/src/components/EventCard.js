@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SERVER_DOMAIN } from '../constants/index';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -21,6 +22,22 @@ const ShareButton = ({ id, showShare, event, setShowShare }) => {
 
     const { signedin } = useAuthContext();
     const [openSave, setOpenSave] = useState(false);
+
+    const token = JSON.parse(localStorage.getItem('userToken'))?.token;
+
+    const handleEventSave = async () => {
+        const response = await fetch(`${SERVER_DOMAIN}/events/save?eventId=${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+    }
 
     return (
         <>
@@ -45,6 +62,9 @@ const ShareButton = ({ id, showShare, event, setShowShare }) => {
                 className={`absolute right-[70px] top-4 p-2 flex items-center justify-center bg-transparent ${!showShare && 'hidden' } bg-white text-black opacity-80 rounded-full border-[1px] border-white hover:border-gray-500`}
                 onClick={() => {
                     if(!signedin) setOpenSave(true);
+                    else{
+                        handleEventSave();
+                    }
                 }}
             > 
                 <SaveIcon fontSize='medium' /> 
@@ -77,25 +97,21 @@ const EventCard = ({ event }) => {
             
         <Card>
 
-            <CardActionArea>
-
-                <div 
-                    // style={{ 
-                    //     background: `url(https://firebasestorage.googleapis.com/v0/b/ticketvibe.appspot.com/o/events%2Fimages%2Fkrishna-in-autumn-my-artwork-wallpaper-v0-kzr4f5h88wub1-min.png?alt=media&token=222994b9-78ca-4ebd-9184-f3964349fb4f) no-repeat center center/cover` 
-                    // }} 
-                    className='h-[200px] hover:opacity-[90%] hover:cursor-default relative'
-                    onMouseEnter={() => setShowShare(true)}
-                    onMouseLeave={() => setShowShare(false)}
-                >
-                    <ShareButton
-                        id={event._id}
-                        showShare={showShare} 
-                        setShowShare={setShowShare}
-                        event={event}
-                    />
-                </div>
-
-            </CardActionArea>
+            <div 
+                // style={{ 
+                //     background: `url(https://firebasestorage.googleapis.com/v0/b/ticketvibe.appspot.com/o/events%2Fimages%2Fkrishna-in-autumn-my-artwork-wallpaper-v0-kzr4f5h88wub1-min.png?alt=media&token=222994b9-78ca-4ebd-9184-f3964349fb4f) no-repeat center center/cover` 
+                // }} 
+                className='h-[200px] hover:opacity-[90%] hover:cursor-default relative'
+                onMouseEnter={() => setShowShare(true)}
+                onMouseLeave={() => setShowShare(false)}
+            >
+                <ShareButton
+                    id={event._id}
+                    showShare={showShare} 
+                    setShowShare={setShowShare}
+                    event={event}
+                />
+            </div>
 
             <Link to={`/event/${event._id}`} target='_blank'>
 
@@ -117,7 +133,12 @@ const EventCard = ({ event }) => {
                     </div>
                     <div className='mb-2'>
                         <div className='text-[12.5px] text-blue-500'>
-                            {event.venue.name}, {event.venue.address}, {event.venue.country}
+                            {
+                                event.mode === 'offline' ? 
+                                    `${event.venue.name}, ${event.venue.address}, ${event.venue.country.includes('_') ? event.venue.country.split('_').join(' ') : event.venue.country}` 
+                                    :
+                                    'Online'
+                            }
                         </div>    
                     </div>
                     <div className='mb-2'>

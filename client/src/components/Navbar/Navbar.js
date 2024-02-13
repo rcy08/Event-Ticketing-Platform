@@ -54,7 +54,7 @@ const Navbar = ({ isOpen, setIsOpen }) => {
       {
         navAtTop ? 
 
-        <div className='w-full flex flex-row justify-center border-b-2 border-gray-300 bg-transparent text-black'>
+        <div className='w-full flex flex-row justify-center bg-transparent text-black border-b-2 border-gray-200'>
 
           <nav className='z-10 w-full max-w-[2000px] h-[80px] sm:h-[65px]' id='navbar' >
 

@@ -55,10 +55,10 @@ const signup = async (req, res) => {
             
             const salt = await bcrypt.genSalt(10);
 
-            const Password = await bcrypt.hash(password, salt);
+            const hashed = await bcrypt.hash(password, salt);
  
             const user = new User({
-                fname, lname, username, email, password : Password, dob, authModes: ['Email']
+                fname, lname, username, email, password : hashed, dob, authModes: ['Email']
             });
             
             const verificationToken = crypto.randomBytes(20).toString('hex');
@@ -69,17 +69,17 @@ const signup = async (req, res) => {
 
             await user.save();
 
-            const savedUser = await User.findOne({ email });
+            const createdUser = await User.findOne({ email });
 
-            const defaultUserImg = 'https://firebasestorage.googleapis.com/v0/b/ticketvibe.appspot.com/o/default-user.png?alt=media&token=f0514669-0595-452a-936d-153f5b12138e';
+            const defaultUserImg = process.env.DEFAULT_USER_IMGURL;
 
-            const image = await uploadImageToStorage(defaultUserImg, `users/${savedUser._id}/profilePicture`);
+            const image = await uploadImageToStorage(defaultUserImg, `users/${createdUser._id}/profilePicture`);
 
-            savedUser.imgUrl = image;
+            createdUser.imgUrl = image;
 
-            await savedUser.save();
+            await createdUser.save();
 
-            const verificationUrl = `https://ticketvibe.vercel.app/auth/email-verification?token=${verificationToken}`;
+            const verificationUrl = `${process.env.CLIENT_DOMAIN}/auth/email-verification?token=${verificationToken}`;
 
             const message = `
                 <h2> Thank You for registering with us! </h2>
@@ -124,15 +124,15 @@ const signup = async (req, res) => {
 
             await user.save();
 
-            const savedUser = await User.findOne({ email });
+            const createdUser = await User.findOne({ email });
 
-            const image = await uploadImageToStorage(imgUrl, `users/${savedUser._id}/profilePicture`);
+            const image = await uploadImageToStorage(imgUrl, `users/${createdUser._id}/profilePicture`);
 
-            savedUser.imgUrl = image;
+            createdUser.imgUrl = image;
 
-            await savedUser.save();
+            await createdUser.save();
 
-            const eventsUrl = 'https://ticketvibe.vercel.app/events';
+            const eventsUrl = `${process.env.CLIENT_DOMAIN}/events`;
 
             const message = `
                 <h2> Welcome to Ticketvibe! </h2>
@@ -185,7 +185,7 @@ const emailVerification = async (req, res) => {
 
     await user.save();
 
-    const eventsUrl = 'https://ticketvibe.vercel.app/events';
+    const eventsUrl = `${process.env.CLIENT_DOMAIN}/events`;
 
     const message = `
         <h2> Welcome to Ticketvibe! </h2>
@@ -269,10 +269,10 @@ const signin = async (req, res) => {
             select: 'title start end reg_start reg_end venue description images rating tags'
         });
 
-        const resetUrl = 'https://ticketvibe.vercel.app/auth/forgot-password';
+        const resetUrl = `${process.env.CLIENT_DOMAIN}/auth/forgot-password`;
 
         const message = `
-            <p> A new login was detected at ${dateConvertor(Date.now())}. If it's you, safely ignore this message otherwise immediately change your password at <a href=${resetUrl}>here</a>. </p>
+            <p> A new login was detected at ${dateConvertor(Date.now())}. If it's you, safely ignore this message otherwise immediately change your password <a href=${resetUrl}>here</a>. </p>
         `;
 
         await sendEmail({
@@ -328,7 +328,7 @@ const signin = async (req, res) => {
                 select: 'title start end reg_start reg_end venue description images rating tags'
             });
 
-            const resetUrl = 'https://ticketvibe.vercel.app/auth/forgot-password';
+            const resetUrl = `${process.env.CLIENT_DOMAIN}/auth/forgot-password`;
 
             const message = `
                 <p> A new login was detected at ${dateConvertor(Date.now())} in your local timezone. If it's you, safely ignore this message otherwise immediately change your password at <a href=${resetUrl}>here</a>. </p>
@@ -370,7 +370,7 @@ const forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetPasswordUrl = `https://ticketvibe.vercel.app/auth/reset-password?token=${resetPasswordToken}`;
+    const resetPasswordUrl = `${process.env.CLIENT_DOMAIN}/auth/reset-password?token=${resetPasswordToken}`;
 
     const message = `
         <h2> You requested a password reset </h2>
@@ -417,9 +417,9 @@ const resetPassword = async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10);
-    const Password = await bcrypt.hash(password, salt);
+    const hashed = await bcrypt.hash(password, salt);
 
-    user.password = Password;
+    user.password = hashed;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
@@ -449,7 +449,7 @@ const userDetails = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
 
-    const { userId } = req.query;
+    const userId = req.user._id;
 
     const user = await User.findOne({ _id: userId });
 
@@ -462,11 +462,14 @@ const deleteAccount = async (req, res) => {
             }
         });
         user.events.organized.forEach(async (eventId) => {
+            const [eventFiles] = await bucket.getFiles({ prefix: `events/${eventId}` });
+            await Promise.all(eventFiles.map(file => file.delete()));
             await Event.findByIdAndDelete(eventId);
         });
     }
 
-    await bucket.file(`users/${user._id}/profilePicture`).delete();
+    const [files] = await bucket.getFiles({ prefix: `users/${userId}` });
+    await Promise.all(files.map(file => file.delete()));
 
     await User.findByIdAndDelete(userId);
 

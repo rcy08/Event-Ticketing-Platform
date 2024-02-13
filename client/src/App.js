@@ -97,7 +97,9 @@ function App() {
     {
       loading ? <Loading /> : 
 
-      <div className='absolute left-0 right-0 top-0 min-h-[100vh] bg-[#f1f5f9] flex flex-col' onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+      <div 
+        className='absolute left-0 right-0 top-0 min-h-[100vh] bg-[#f1f5f9] flex flex-col' onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
+      >
 
         { loadingState && <Loader /> }
 

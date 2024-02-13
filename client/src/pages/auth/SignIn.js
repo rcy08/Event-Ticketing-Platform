@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useLoadingContext } from '../../hooks/useLoadingContext';
+import { SERVER_DOMAIN } from '../../constants/index';
 
 const SignIn = () => {
 
@@ -26,7 +27,7 @@ const SignIn = () => {
         
         loadingDispatch({ type: 'LOADING' });
         
-        const response = await fetch('https://ticketvibeserver.cyclic.app/auth/signin', {
+        const response = await fetch(`${SERVER_DOMAIN}/auth/signin`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ 
@@ -70,7 +71,7 @@ const SignIn = () => {
 
         loadingDispatch({ type: 'LOADING' });
     
-        const res = await fetch('https://ticketvibeserver.cyclic.app/auth/signin', {
+        const res = await fetch(`${SERVER_DOMAIN}/auth/signin`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ 

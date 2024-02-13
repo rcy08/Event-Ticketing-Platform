@@ -11,6 +11,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import { SERVER_DOMAIN } from '../../constants/index';
 
 export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData, user, response }) {
 
@@ -47,7 +48,7 @@ export default function GoogleSignUpPopup({ open, setOpen, formData, setFormData
 
             setStatus('pending');
 
-            const res = await fetch('https://ticketvibeserver.cyclic.app/auth/signup', {
+            const res = await fetch(`${SERVER_DOMAIN}/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type' : 'application/json' },
                 body: JSON.stringify({ 

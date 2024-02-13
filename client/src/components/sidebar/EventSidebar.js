@@ -140,28 +140,56 @@ export default function TemporaryDrawer({ showFilter, setShowFilter }) {
           <Collapse in={open} timeout="auto" unmountOnExit>
 
             <List component="div" disablePadding>
-              
-              <button className='w-full p-6 pb-2 text-white'>
-                <Options 
-                  options={sortOptions} 
-                  handleFilter={(inputValue) => {
-                    let copy = searchParams;
-                    copy.set('sort_by', inputValue);
-                    setSearchParams(copy);
-                  }} 
-                />
-              </button>
 
-              <button className='w-full p-6 pb-2 text-white'>
-                <Options 
-                  options={modeOptions} 
-                  handleFilter={(inputValue) => {
+              <Autocomplete
+                value={searchParams.get('sort_by')}
+                onChange={(event, newValue) => {
+                  if(!newValue){
+                    searchParams.delete('sort_by');
+                  }
+                  else{
                     let copy = searchParams;
-                    copy.set('mode', inputValue);
+                    copy.set('sort_by', newValue.filter);
                     setSearchParams(copy);
-                  }} 
-                />
-              </button>
+                  }
+                }}
+                id="controllable-states-demo"
+                options={sortOptions}
+                renderInput={(params) => 
+                  <TextField 
+                    {...params} 
+                    label="Sort" 
+                    style={{
+                      backgroundColor: '#ffffff',
+                    }}
+                  />}
+                className='px-6 pt-6 pb-3 text-white'
+              />
+
+              <Autocomplete
+                value={searchParams.get('mode')}
+                onChange={(event, newValue) => {
+                  if(!newValue){
+                    searchParams.delete('mode');
+                  }
+                  else{
+                    let copy = searchParams;
+                    copy.set('mode', newValue.filter);
+                    setSearchParams(copy);
+                  }
+                }}
+                id="controllable-states-demo"
+                options={modeOptions}
+                renderInput={(params) => 
+                  <TextField 
+                    {...params} 
+                    label="Mode" 
+                    style={{
+                      backgroundColor: '#ffffff',
+                    }}
+                  />}
+                className='px-6 pt-6 pb-3 text-white'
+              />
 
               <Autocomplete
                 className='mb-2 w-full p-6 text-white'

@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { SERVER_DOMAIN } from '../../constants/index';
 
 const ResetPassword = () => {
 
@@ -24,7 +25,7 @@ const ResetPassword = () => {
 
         if (password.length >= 6 && password === confirmpassword) {
 
-            const response = await fetch(`https://ticketvibeserver.cyclic.app/auth/reset-password/${resetToken}`, {
+            const response = await fetch(`${SERVER_DOMAIN}/auth/reset-password/${resetToken}`, {
                 method: 'POST',
                 headers: { 'Content-Type' : 'application/json' },
                 body: JSON.stringify({ password })

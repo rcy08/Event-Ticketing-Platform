@@ -4,6 +4,7 @@ import { useLoadingContext } from '../../hooks/useLoadingContext';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import GoogleSignUpPopup from './GoogleSignUpPopup';
+import { SERVER_DOMAIN } from '../../constants/index';
 
 import FileUpload from '../../components/FileUpload';
 
@@ -96,7 +97,7 @@ const SignUp = () => {
 
             loadingDispatch({ type: 'LOADING' });
 
-            const response = await fetch('https://ticketvibeserver.cyclic.app/auth/signup', {
+            const response = await fetch(`${SERVER_DOMAIN}/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type' : 'application/json' },
                 body: JSON.stringify({ 

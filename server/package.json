@@ -27,6 +27,6 @@
     "mongoose": "^7.4.3",
     "nodemailer": "^6.9.7",
     "nodemon": "^3.0.1",
-    "redis": "^4.6.12"
+    "sharp": "^0.33.2"
   }
 }

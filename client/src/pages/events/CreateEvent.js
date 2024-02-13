@@ -1,10 +1,5 @@
 import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
-import { countries } from '../../constants/index';
+import { SERVER_DOMAIN, countries } from '../../constants/index';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -244,15 +239,22 @@ const CreateEvent = () => {
 
         if(!validateData()) return;
 
-        console.log(2);
-
-        const response = await fetch('https://ticketvibeserver.cyclic.app/events/create', {
+        const response = await fetch(`${SERVER_DOMAIN}/events/create`, {
             method: 'POST',
             headers: { 
                 'Content-Type' : 'application/json',
                 'Authorization' : `Bearer ${token}`
             },
-            body: JSON.stringify({ title, start: eventStart, end: eventEnd, reg_start: regStart, reg_end: regEnd, mode, venue, description })
+            body: JSON.stringify({ 
+                title, 
+                start: eventStart, 
+                end: eventEnd, 
+                reg_start: regStart, 
+                reg_end: regEnd, 
+                mode, 
+                venue, 
+                description 
+            })
         });
 
         const data = await response.json();
@@ -270,9 +272,6 @@ const CreateEvent = () => {
             setVenue({});
             setDescription('');
             setStatus(data.message);
-
-            // dispatch({ type: 'CREATE_EVENT', payload: data.event});
-            // navigate('/events');
         }
 
     }  
@@ -309,8 +308,6 @@ const CreateEvent = () => {
                             }}
                         />
                         <div className='peer-focus:font-medium text-xs text-red-500'> {errors?.eventStart} </div>
-                        {eventStart}
-                        {eventStartInput}
                     </div>
 
                     <div className='block' >

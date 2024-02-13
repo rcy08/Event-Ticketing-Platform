@@ -1,6 +1,5 @@
 const admin = require('firebase-admin');
-const config = require('../ticketvibe-firebase-adminsdk-qys38-42702b043e');
-const serviceAccount = config;
+const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_CONFIG);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

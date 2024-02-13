@@ -200,7 +200,7 @@ const NavbarContent = ({ isOpen, setIsOpen, navAtTop }) => {
                 onClick={() => {
                   window.location.href = '/auth/signup';
                 }}
-                className={`sm:mr-3 primary-btn ${!navAtTop && 'hover:shadow-md hover:shadow-[#0015ff]'} font-medium`}
+                className={`hidden sm:inline sm:mr-3 primary-btn ${!navAtTop && 'hover:shadow-md hover:shadow-[#0015ff]'} font-medium`}
               >
                 <p className='py-[6px] px-[8px]'> SignUp </p> 
               </button>

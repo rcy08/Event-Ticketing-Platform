@@ -1,5 +1,6 @@
 const axios = require('axios');
 const bucket = require('./initializeFirebase');
+const sharp = require('sharp');
 
 const uploadImageToStorage = async (imageUrl, destinationPath) => {
     try {
@@ -8,6 +9,12 @@ const uploadImageToStorage = async (imageUrl, destinationPath) => {
   
       // Create a buffer from the image content
       const imageBuffer = Buffer.from(data, 'binary');
+
+      // Compress the image using sharp
+      const compressedImageBuffer = await sharp(imageBuffer)
+        // .resize({ width: 800 }) // Resize the image to a maximum width of 800 pixels
+        .png() // Convert the image to PNG format
+        .toBuffer(); // Convert the image to a buffer
   
       // Define the destination file in Firebase Storage
       const file = bucket.file(destinationPath);
@@ -19,8 +26,8 @@ const uploadImageToStorage = async (imageUrl, destinationPath) => {
         },
       });
   
-      // Write the buffer to the stream
-      stream.end(imageBuffer);
+      // Write the compressed image buffer to the stream
+      stream.end(compressedImageBuffer);
   
       // Wait for the upload to complete
       await new Promise((resolve, reject) => {

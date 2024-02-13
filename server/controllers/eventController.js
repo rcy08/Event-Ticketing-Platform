@@ -12,9 +12,8 @@ const allEvents = async (req, res) => {
 
     let query = {}, sortQuery = { start: -1, createdAt: -1 };
 
-    q = q.split(' ').join('');
-
     if(q) {
+        q = q.split(' ').join('');
         query = {...query, 
             $or: [ 
                 { title: { $regex: q, $options: 'i' } }, 
@@ -60,6 +59,8 @@ const allEvents = async (req, res) => {
         })
 
     const count = await Event.find(query).count();
+    
+    res.setHeader('Cache-Control', 'public, max-age=2592000');
 
     res.status(200).json({ events, count });
 
@@ -92,6 +93,8 @@ const getEvent = async (req, res) => {
         return res.status(404).json({ errors });
     }
 
+    res.setHeader('Cache-Control', 'public, max-age=2592000');
+
     res.status(200).json({ event });
 };
 
@@ -108,7 +111,7 @@ const createEvent = async (req, res) => {
             country: venue.country,
             coordinates: [venue.latitude, venue.longitude]
         };
-    }
+    };
 
     const eventExists = await Event.findOne({ title, start, end, reg_start, reg_end, mode, venue: venueInput, description });
 
@@ -125,7 +128,7 @@ const createEvent = async (req, res) => {
 
     const user = await User.findOne({ _id: userId });
 
-    user.events.push(event._id);
+    user.events.organized.push(event._id);
 
     await user.save();
 
@@ -163,6 +166,20 @@ const updateEvent = async (req, res) => {
 const deleteEvent = async (req, res) => {
 
     const { id } = req.params;
+    const userId = req.user._id;
+
+    const event = await Event.findById(id);
+    if(!event){
+        return res.status(200).json({
+            message : "Event not found"
+        });
+    }
+
+    if(event.createdBy !== userId){
+        return res.status(401).json({
+            message : "Unauthorized access"
+        });
+    }
 
     await Event.findByIdAndDelete(id);
 
@@ -174,39 +191,71 @@ const deleteEvent = async (req, res) => {
 
 const bookEvent = async (req, res) => {
 
-    const { userId, eventId } = req.query;
+    const { eventId } = req.query;
+    const userId = req.user._id;
 
     if (!mongoose.Types.ObjectId.isValid(eventId)) {
-        errors = "No such event";
+        errors = 'Invalid event';
         return res.status(404).json({ errors });
     }
 
     const event = await Event.findById(eventId);
 
     if (!event) {
-        errors = "Event not found or already ended";
-        return res.status(404).json({ errors });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-        errors = "Invalid user";
+        errors = 'Event not found or already ended';
         return res.status(404).json({ errors });
     }
 
     if (event.bookedBy.includes(userId)) {
-        errors = "You've already booked this event";
+        errors = `You've already booked this event`;
         return res.status(401).json({ errors });
     }
 
     event.bookedBy.push(userId);
     await event.save();
 
+    const user = await User.findOne({ _id: userId });
+    user.events.booked.push(eventId);
+    await user.save();
+
     res.status(200).json({
         message: "Event Booked Successfully"
     });
 
-}
+};
 
+const saveEvent = async (req, res) => {
+
+    const { eventId } = req.query;
+    const userId = req.user._id;
+
+    if(!mongoose.Types.ObjectId.isValid(eventId)){
+        errors = 'Invalid event';
+        return res.status(401).json({ errors });
+    }
+
+    const event = await Event.findOne({ _id: eventId });
+    if(!event){
+        return res.status(404).json({ errors: 'Event not found' });
+    }
+
+    if(!event.savedBy.includes(userId)){
+        event.savedBy.push(userId);
+        await event.save();    
+    }
+
+    const user = await User.findOne({ _id: userId });
+
+    if(!user.events.saved.includes(event._id)){
+        user.events.saved.push(event._id);
+        await user.save();    
+    }
+    
+    res.status(201).json({ 
+        message: 'Event saved successfully' 
+    });
+
+};
 
 module.exports = {
     allEvents,
@@ -215,4 +264,5 @@ module.exports = {
     updateEvent,
     deleteEvent,
     bookEvent,
+    saveEvent
 };

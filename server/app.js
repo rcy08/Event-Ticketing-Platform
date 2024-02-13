@@ -18,7 +18,6 @@ if (cluster.isMaster) {
     });
 } 
 else {
-    // Your regular Node.js server logic here
 
     const express = require('express');
     const mongoose = require('mongoose');
@@ -37,7 +36,7 @@ else {
 
     app.use(
         cors({
-            origin: "https://ticketvibe.vercel.app",
+            origin: process.env.CLIENT_DOMAIN,
             credentials: true,
         })
     );
@@ -48,11 +47,14 @@ else {
                 console.log(`Connected to db and listening on port ${process.env.PORT}`);
             });
         })
+        .catch((err) => {
+            console.log(`Error connecting to DB: ${err}`);
+        })
 
     app.use((req, res, next) => {
         res.setHeader(
             "Access-Control-Allow-Origin",
-            "https://ticketvibe.vercel.app"
+            process.env.CLIENT_DOMAIN
         );
         res.header(
             "Access-Control-Allow-Origin",
@@ -60,6 +62,11 @@ else {
             "Access-Control-Allow-Methods: GET, DELETE, PUT, PATCH, HEAD, OPTIONS, POST"
         );
         next();
+    });
+
+    app.get('/', (req, res) => {
+        const url = process.env.CLIENT_DOMAIN;
+        res.send(`<a href=${url}>${url}</a>`);
     });
 
     app.use('/auth', authRoutes);

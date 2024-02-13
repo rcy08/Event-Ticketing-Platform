@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLoadingContext } from '../../hooks/useLoadingContext';
+import { SERVER_DOMAIN } from '../../constants/index';
 
 const ForgotPassword = () => {
 
@@ -23,7 +24,7 @@ const ForgotPassword = () => {
 
         loadingDispatch({ type: 'LOADING' });
 
-        const response = await fetch('https://ticketvibeserver.cyclic.app/auth/forgot-password', {
+        const response = await fetch(`${SERVER_DOMAIN}/auth/forgot-password`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({ email })

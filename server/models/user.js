@@ -13,13 +13,19 @@ const userSchema = new Schema({
     username: {
         type: String,
         required: true,
+        unique: true,
     },
     email: {
         type: String,
         required: true,
+        unique: true,
     },
     password: {
         type: String,
+    },
+    twofactorauth: {
+        type: Boolean,
+        default: false,
     },
     dob: {
         type: Date,
@@ -63,7 +69,8 @@ const userSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        index: true,
     },
     updatedAt: {
         type: Date
@@ -73,5 +80,7 @@ const userSchema = new Schema({
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 });
+
+userSchema.index({ 'username': 1, 'email': 1 });
 
 module.exports = mongoose.model('user', userSchema);

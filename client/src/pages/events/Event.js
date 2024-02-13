@@ -1,4 +1,5 @@
 
+import { SERVER_DOMAIN } from '../../constants/index';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Carousel, Card } from 'flowbite-react'; 
@@ -83,7 +84,7 @@ const Event = () => {
 
         const fetchEvent = async () => {
 
-            const response = await fetch(`https://ticketvibeserver.cyclic.app/events/${id}`);
+            const response = await fetch(`${SERVER_DOMAIN}/events/${id}`);
 
             const data = await response.json();
 
@@ -94,6 +95,7 @@ const Event = () => {
             }
             else{
                 setEvent(data.event);
+                document.title = data.event.title;
             }
 
         }   
@@ -122,11 +124,14 @@ const Event = () => {
             return;
         }
 
-        // console.log(userDetails._id);
-        const user_id = userDetails._id;
-        const response = await fetch(`https://ticketvibeserver.cyclic.app/events/book-event?userId=${user_id}&eventId=${id}`, {
+        const token = JSON.parse(localStorage.getItem('userToken'))?.token;
+       
+        const response = await fetch(`${SERVER_DOMAIN}/events/book?eventId=${id}`, {
             method: 'POST',
-            headers: { 'Content-Type' : 'application/json' }
+            headers: { 
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${token}` 
+            }
         });
 
         const data = await response.json();
@@ -299,7 +304,9 @@ const Event = () => {
                                             <p className='text-[16px]'> {event.venue.name} </p> 
                                         </h1> 
                                         <h3 className='text-sm mb-4 text-black'>
-                                            {event.venue.address}, {event.venue.country}
+                                            {event.venue.address}, {
+                                                event.venue.country.includes('_') ? event.venue.country.split('_').join(' ').charAt(0).toUpperCase() + event.venue.country.split('_').join(' ').slice(1)  : event.venue.country.charAt(0).toUpperCase() + event.venue.country.slice(1)
+                                            }
                                         </h3>
                                         <Link 
                                             to={`https://google.com/maps?q=${event.venue.coordinates[0]},${event.venue.coordinates[1]}`} className='text-sm text-blue-600 font-semibold'

@@ -4,20 +4,30 @@ const router = express.Router();
 
 const { auth } = require('../middlewares/auth');
 
-const { allEvents, getEvent, createEvent, updateEvent, deleteEvent, bookEvent } = require('../controllers/eventController');
+const { 
+    allEvents, 
+    getEvent, 
+    createEvent, 
+    updateEvent, 
+    deleteEvent, 
+    bookEvent,
+    saveEvent 
+} = require('../controllers/eventController');
 
 const cacheMiddleware = require('../middlewares/cacheMiddleware');
 
-router.post('/', cacheMiddleware(60), allEvents);
+router.post('/', cacheMiddleware(10), allEvents);
 
-router.get('/:id', cacheMiddleware(60), getEvent);
+router.get('/:id', cacheMiddleware(10), getEvent);
 
 router.post('/create', auth, createEvent);
 
 router.post('/update', updateEvent);
 
-router.delete('/delete/:id', deleteEvent);
+router.delete('/delete/:id', auth, deleteEvent);
 
-router.post('/book-event', bookEvent);
+router.post('/book', auth, bookEvent);
+
+router.post('/save', auth, saveEvent);
 
 module.exports = router;

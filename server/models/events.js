@@ -6,37 +6,45 @@ const eventSchema = new Schema({
     title: {
         type: String,
         required: true,
+        index: true,
     },
     start: {
         type: Date,
         required: true,
+        index: true,
     },
     end: {
         type: Date,
         required: true,
+        index: true,
     },
     reg_start: {
         type: Date,
         required: true,
+        index: true,
     },
     reg_end: {
         type: Date,
         required: true,
+        index: true,
     },
     mode: {
         type: String,
         enum: ['online', 'offline'],
-        default: 'online'
+        default: 'online',
+        index: true,
     },
     venue: {
         name: {
             type: String,
+            index: true,
         },
         address: {
             type: String,
         },
         country: {
             type: String,
+            index: true,
         },
         coordinates: [
             {
@@ -46,7 +54,8 @@ const eventSchema = new Schema({
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        index: true,
     },
     images: [
         {
@@ -63,7 +72,8 @@ const eventSchema = new Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: true,
+        index: true,
     },
     bookedBy: [
         {
@@ -109,8 +119,11 @@ const eventSchema = new Schema({
     tags: [
         {
             type: String,
+            index: true,
         }
     ]
 });
+
+eventSchema.index({ 'title': 1, 'start': 1, 'end': 1, 'venue.country': 1, 'tags': 1 });
 
 module.exports = mongoose.model('event', eventSchema);
