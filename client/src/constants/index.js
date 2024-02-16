@@ -2,7 +2,7 @@
 import { createTheme } from "@mui/material/styles";
 import { orange, blue } from '@mui/material/colors';
 
-export const SERVER_DOMAIN = 'http://localhost:4000';
+export const SERVER_DOMAIN = 'https://ticketvibeserver.cyclic.app';
 
 export const paginationTheme = createTheme({
   palette: {
